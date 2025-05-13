@@ -1,0 +1,23 @@
+.pirmas {
+    color: #74df0c;
+    font-size: 30px;
+    font-weight: 400;
+    font-family: "Oswald", sans-serif;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.antras {
+    color: #74df0c;
+    font-size: 30px;
+    font-weight: 400;
+    font-family: "Slabo 27px", serif;
+}
+
+.rudas {
+    color: black;
+}
+
+.rudas {
+    color: brown;
+}
