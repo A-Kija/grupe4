@@ -59,3 +59,19 @@ body .senelis div div div {
 .senelis div div div {
     color: yellow;
 }
+
+p {
+    color: skyblue;
+}
+
+div p {
+    color: crimson;
+}
+
+u {
+    text-decoration: none;
+}
+
+i {
+    font-style: normal;
+}
