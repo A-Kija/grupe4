@@ -21,6 +21,8 @@ $black: #000000;
 $fancy-font: "Fascinate", system-ui;
 $main-font: "Oswald", sans-serif;
 
+$heder-height: 96px;
+
 
 * {
     box-sizing: border-box;
@@ -65,10 +67,11 @@ li {
 
 header {
     width: 100%;
-    height: 96px;
+    height: $heder-height;
     display: flex;
     justify-content: center;
     background-color: $blue;
+
     .menu {
         display: flex;
         justify-content: space-between;
@@ -77,23 +80,53 @@ header {
         max-width: $xl;
         padding: 0 $gap;
 
+        &__left {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            color: $white;
+            svg {
+                width: 50px;
+                height: 50px;
+                fill: $white;
+
+                path:nth-child(5) {
+                    fill: $yellow;
+                }
+            }
+        }
+
+        &__right {
+            color: $white;
+            font-size: 14px;
+        }
+
         &__center {
             nav ul {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 gap: $gap;
+
                 li a {
                     color: $yellow;
                     font-size: 22px;
                     font-weight: 400;
                     transition: all 0.3s ease;
+
                     &:hover {
                         color: $white;
                     }
                 }
             }
         }
-
     }
+}
+
+section.hero {
+    width: 100%;
+    height: calc(100vh - #{$heder-height});
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
