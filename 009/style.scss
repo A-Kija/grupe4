@@ -72,6 +72,7 @@ header {
     display: flex;
     justify-content: center;
     background-color: $blue;
+    position: relative;
 
     .menu {
         display: flex;
@@ -127,11 +128,12 @@ header {
     .burger {
         height: 10px;
         width: $burger-width;
-        background-color: black;
+        background-color: $white;
         margin: 13px 0;
         position: relative;
         cursor: pointer;
         transition: all 0.4s;
+        display: none;
 
         &::before {
             content: '';
@@ -140,7 +142,8 @@ header {
             width: $burger-width;
             position: absolute;
             bottom: 13px;
-            background-color: black;
+            background-color: $white;
+            ;
             transition: all 0.4s;
         }
 
@@ -151,20 +154,56 @@ header {
             width: $burger-width;
             position: absolute;
             top: 13px;
-            background-color: black;
+            background-color: $white;
             transition: all 0.4s;
         }
     }
 
+    .mobile-menu {
+        display: none;
+        position: absolute;
+        z-index: 1000;
+        background-color: $blue;
+        width: 100%;
+        left: 0;
+        top: $heder-height;
+        transform: translate(-100%, 0);
+        transition: all 0.4s ease-in-out;
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            padding: $gap-max;
+
+        }
+    }
+
+    input {
+        display: none;
+
+        &:checked+.mobile-menu {
+            transform: translate(0, 0);
+        }
+    }
 
     @media (max-width: $sm) {
         .desktop-menu {
             display: none;
         }
 
+        .mobile-menu {
+            display: block;
+        }
+
         .menu__right {
             display: none;
         }
+
+        .burger {
+            display: block;
+        }
+
+
     }
 
 }
@@ -226,6 +265,40 @@ header {
                 margin-bottom: 30px;
                 line-height: 1.2;
             }
+        }
+    }
+}
+
+.list {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 50px;
+
+    &__bin {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        max-width: $xl;
+        row-gap: $gap;
+        padding: 0 $gap;
+
+        &__box {
+            width: 100%;
+            max-width: calc(33.333% - 2 * $gap / 3);
+            padding: $gap-max;
+            border: 1px solid $gray;
+
+            @media (max-width: $sm) {
+                max-width: calc(50% - $gap / 2);
+            }
+
+            @media (max-width: $xs) {
+                max-width: unset;
+            }
+
         }
     }
 }
