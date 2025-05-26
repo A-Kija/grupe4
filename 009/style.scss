@@ -1,4 +1,4 @@
-$xl: 1300px;
+$xl: 1100px;
 $lg: 1200px;
 $md: 992px;
 $sm: 768px;
@@ -85,6 +85,7 @@ header {
             align-items: center;
             flex-direction: column;
             color: $white;
+
             svg {
                 width: 50px;
                 height: 50px;
@@ -123,10 +124,63 @@ header {
     }
 }
 
-section.hero {
+.hero {
     width: 100%;
     height: calc(100vh - #{$heder-height});
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.05);
+        transform: scale(1);
+        animation-name: fancy;
+        animation-duration: 20s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+
+    @keyframes fancy {
+        0% {
+            transform: scale(1);
+            filter: brightness(0.05);
+        }
+
+        5% {
+            filter: brightness(1);
+        }
+
+        95% {
+            filter: brightness(1);
+        }
+
+        100% {
+            transform: scale(1.7);
+            filter: brightness(0.05);
+        }
+    }
+
+    &__bin {
+        position: absolute;
+        display: flex;
+        width: 100%;
+        max-width: $xl;
+        padding: 0 $gap;
+
+        &__box {
+            color: $white;
+            width: 30%;
+
+            h1 {
+                font-size: 60px;
+                margin-bottom: 30px;
+                line-height: 1.2;
+            }
+        }
+    }
 }
