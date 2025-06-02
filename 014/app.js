@@ -108,4 +108,3 @@ const noriuPaziuret = 'miegamasis';
 
 
 console.log(namas.kambariai[noriuPaziuret]);
-
