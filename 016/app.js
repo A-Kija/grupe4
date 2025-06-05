@@ -82,7 +82,10 @@ console.log(all);
 const B = 'ananasas';
 
 for (let i = 0; i < B.length; i++) {
-    B[i] == 'a' && console.log(B[i]);
+    // B[i] == 'a' && console.log(B[i]);
+    if (B[i] == 'a') {
+        console.log(B[i]);
+    }
 }
 
 // console.log(B);
