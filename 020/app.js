@@ -89,3 +89,44 @@ const elemPrint = function(el, index) {
 // colors.forEach(elemPrint);
 
 colors.forEach(el => console.log(el));
+
+const digits = [5, 8, 74, 0, 32, 75, 4];
+// su ciklu forEach konsolėje atspausdinkite skaičius po vieną skaičių (stulpeliu)
+
+digits.forEach(el => console.log(el));
+
+// su ciklu forEach konsolėje atspausdinkite skaičius po vieną skaičių padaugintą iš 3 (stulpeliu)
+console.clear();
+
+digits.forEach(el => console.log(el * 3));
+
+// su ciklu forEach konsolėje atspausdinkite skaičius po vieną skaičių (stulpeliu) bet ne == 0
+console.clear();
+
+digits.forEach(el => el && console.log(el));
+
+console.clear();
+
+digits.forEach(el => {
+    if (el != 0) {
+        console.log(el);
+    }
+});
+
+console.clear();
+
+const fe = colors.forEach(el => console.log(el));
+console.log(fe);
+
+console.clear();
+
+const mp = colors.map(el => '<li>' + el + '</li>');
+console.log(mp);
+
+
+const digits2 = [5, 8, 74, 0, 32, 75, 4];
+// su map metodu sukurkite naują masyvą, kuriame būtų seno masyvo skaičiai padauginti iš 8
+
+
+const d2 = digits2.map(petras => petras * 8);
+console.log(d2);
