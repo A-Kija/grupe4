@@ -60,27 +60,29 @@ const products = [
     }
 ];
 
+const cart = [];
+
 
 const renderProducts = (sort = 'default') => {
     const productsHtmlBin = document.querySelector('[data-products]');
     const productTemplate = document.querySelector('[data-product-template]');
-        productsHtmlBin.innerHTML = '';
-        let sortedProducts;
-        if (sort == 'default') {
-            sortedProducts = [...products];
-        } else if(sort == '0-9') {
-            sortedProducts = products.toSorted((a, b) => a.price - b.price);
-        } else if(sort == '9-0') {
-            sortedProducts = products.toSorted((a, b) => b.price - a.price);
-        } else if(sort == 'A-Z') {
-            sortedProducts = products.toSorted((a, b) => a.title.localeCompare(b.title, 'lt'));
-        } else {
-            console.error('Bad sort type');
-        }
+    productsHtmlBin.innerHTML = '';
+    let sortedProducts;
+    if (sort == 'default') {
+        sortedProducts = [...products];
+    } else if (sort == '0-9') {
+        sortedProducts = products.toSorted((a, b) => a.price - b.price);
+    } else if (sort == '9-0') {
+        sortedProducts = products.toSorted((a, b) => b.price - a.price);
+    } else if (sort == 'A-Z') {
+        sortedProducts = products.toSorted((a, b) => a.title.localeCompare(b.title, 'lt'));
+    } else {
+        console.error('Bad sort type');
+    }
 
-        sortedProducts.forEach(product => {
+    sortedProducts.forEach(product => {
         const clone = productTemplate.content.cloneNode(true);
-        
+
         clone.querySelector('[data-title]').textContent = product.title;
         clone.querySelector('[data-image]').setAttribute('src', product.image);
         clone.querySelector('[data-price]').textContent = product.price;
@@ -88,6 +90,20 @@ const renderProducts = (sort = 'default') => {
         clone.querySelector('[data-add-button]').dataset.id = product.id; // prideda tagui attr data-id="45"
 
         productsHtmlBin.appendChild(clone);
+        
+    });
+    addButtonsInit();
+}
+
+const addButtonsInit = _ => {
+    const buttons = document.querySelectorAll('[data-add-button]');
+    buttons.forEach(b => {
+        b.addEventListener('click', _ => {
+            const id = parseInt(b.dataset.id);
+            const input = b.closest('[data-product]').querySelector('[data-add-amount]');
+            const amount = parseInt(input.value);
+            console.log(id, amount);
+        });
     });
 }
 
@@ -99,11 +115,35 @@ const doSort = _ => {
     });
 }
 
+const cartIconInit = _ => {
+    const icon = document.querySelector('[data-cart-icon]');
+    icon.dataset.show = 'hide';
+    icon.addEventListener('click', _ => {
+        if (icon.dataset.show == 'hide') {
+            icon.dataset.show = 'show';
+            showCartContent();
+        } else {
+            icon.dataset.show = 'hide';
+            hideCartContent();
+        }
+    });
+}
+
+const showCartContent = _ => {
+    const list = document.querySelector('[data-cart-content]');
+    list.style.display = null;
+}
+
+const hideCartContent = _ => {
+    const list = document.querySelector('[data-cart-content]');
+    list.style.display = 'none';
+}
 
 
 const initShop = _ => {
     renderProducts();
     doSort();
+    cartIconInit();
 }
 
 
