@@ -6,56 +6,56 @@ const products = [
         id: 456,
         title: 'Plastikinės ekologiškos samanos',
         price: 12.45,
-        image: 'http://127.0.0.1:5500/cart/images/01.webp',
+        image: 'http://127.0.0.1:5500/cart/images/01.jpeg',
         max: 11
     },
     {
         id: 789,
         title: 'Maži guminiai robotai',
         price: 100.45,
-        image: 'http://127.0.0.1:5500/cart/images/02.webp',
+        image: 'http://127.0.0.1:5500/cart/images/02.jpeg',
         max: 7
     },
     {
         id: 101112,
         title: 'Dideli guminiai robotai',
         price: 545.45,
-        image: 'http://127.0.0.1:5500/cart/images/03.webp',
+        image: 'http://127.0.0.1:5500/cart/images/03.jpeg',
         max: 3
     },
     {
         id: 131415,
         title: 'Metaliniai vinys',
         price: 4.45,
-        image: 'http://127.0.0.1:5500/cart/images/04.webp',
+        image: 'http://127.0.0.1:5500/cart/images/04.jpeg',
         max: 17
     },
     {
         id: 161718,
         title: 'Plastikiniai maišeliai',
         price: 0.45,
-        image: 'http://127.0.0.1:5500/cart/images/05.webp',
+        image: 'http://127.0.0.1:5500/cart/images/05.jpeg',
         max: 103
     },
     {
         id: 192021,
         title: 'Džiutiniai maišeliai',
         price: 1.45,
-        image: 'http://127.0.0.1:5500/cart/images/06.webp',
+        image: 'http://127.0.0.1:5500/cart/images/06.jpeg',
         max: 52
     },
     {
         id: 222324,
         title: 'Kotas metalinėms lentoms',
         price: 2.45,
-        image: 'http://127.0.0.1:5500/cart/images/07.webp',
+        image: 'http://127.0.0.1:5500/cart/images/07.jpeg',
         max: 28
     },
     {
         id: 252627,
         title: 'Plastikiniai maišeliai su užtrauktuku',
         price: 3.45,
-        image: 'http://127.0.0.1:5500/cart/images/08.webp',
+        image: 'http://127.0.0.1:5500/cart/images/08.jpeg',
         max: 33
     }
 ];
