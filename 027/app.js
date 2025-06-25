@@ -64,13 +64,27 @@ console.log(preke4, preke4.total());
 // 2. Patobulinkit klasę, pridėdami savybę "kiek", kuri lygi 2;
 // 3. Patobulinkit klasę, pridėdami savybę "turi", kurią galima įrašyti objekto kūrimo metu
 // 4. Patobulinkit klasę, pridėdami metodą "daug", kuris sudaugina kiek ir turiu ir grąžina rezultatą
+// 5. Patobulinkit klasę, pridėdami metodą, kuris įgalina pakeisti savybe "kiek"
+// 6. Patobulinkit klasę, pridėdami metodą, kuris įgalina pakeisti savybe "kiek", jeigu norime keisti,
+// į skaičių kuris yra didesnis nei 10, keitimo NEATLIEKAME
 
 
 // PETRAS
 class Du {
-    constructor(t) {
+    constructor(t) { // pasileidzia pati
         this.kiek = 2;
         this.turiu = t;
+    }
+
+    daug() { // getter
+        return this.kiek * this.turiu;
+    }
+
+    keistiKiek(k) { // setter
+        if (k <= 10) {
+            this.kiek = k;
+        }
+        return this;
     }
 }
 
@@ -78,4 +92,10 @@ class Du {
 const du01 = new Du(55);
 const du02 = new Du(33);
 
-console.log(du01, du02);
+;
+
+console.log(du01.keistiKiek(70).keistiKiek(4).keistiKiek(5).kiek); // chaining
+
+// console.log(du01, du02, du01.daug(), du02.daug());
+
+// console.log(typeof Du, typeof du01);
