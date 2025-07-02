@@ -53,9 +53,65 @@ for (let i = 0; i < 7; i++) {
 
 console.clear();
 
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 30; i++) {
 
     const HS = rand(0, 1) ? 'H' : 'S';
     console.log(HS);
 
+    // if (HS == 'H') { labai blogai
+    //     break;
+    // }
+
 }
+
+console.clear();
+
+let HS1;
+let HS2;
+let saugiklis = 88;
+
+do {
+    if (--saugiklis == 0) {
+        console.log('BUM');
+        break;
+    }
+
+    HS1 = rand(0, 1) ? 'H' : 'S';
+    HS2 = rand(0, 1) ? 'H' : 'S';
+    console.log(HS1, HS2);
+
+} while (HS1 != 'H' || HS2 != 'H');
+
+
+/*
+
+== <-> !=
+> <-> <=
+< <-> >=
+|| <-> &&
+
+
+*/
+
+
+// Meskite monetą tol, kol tris kartus iškris herbas
+// Meskite monetą tol, kol iš eilės tris kartus iškris herbas
+
+console.clear();
+
+let kiekis = 0;
+saugiklis = 88;
+
+do {
+    if (--saugiklis == 0) {
+        console.log('BUM');
+        break;
+    }
+    const HS = rand(0, 1) ? 'H' : 'S';
+    console.log(HS);
+    if (HS == 'H') {
+        kiekis++;
+    }
+
+
+} while (kiekis != 3);
