@@ -100,3 +100,58 @@ switch (siunta) {
     default:
         console.log('Tikrinam XL');
 }
+
+console.clear();
+
+const masyvas = ['Bijūnas', 'Jurginas', 'Rožė', 'Tulpė', 'Narcizas'];
+
+for (let i = 0; i < masyvas.length; i++) {
+    const gelyte = masyvas[i];
+    console.log(gelyte);
+}
+
+console.log('------');
+
+for (const gelyte of masyvas) {
+    if (gelyte == 'Rožė') {
+        continue;
+    }
+    console.log(gelyte);
+}
+
+// nesigauna taip
+// masyvas.forEach(gelyte => {
+//     if (gelyte == 'Rožė') {
+//         break;
+//     }
+//     console.log(gelyte);
+// })
+
+console.log('------');
+
+const objektas = {
+    darze: 'Bijūnas',
+    prie_kelio: 'Jurginas',
+    po_langu888888: 'Rožė',
+    sode: 'Tulpė',
+    pamerktas: 'Narcizas'
+};
+
+
+for (const gelyte in objektas) {
+    if (objektas[gelyte] == 'Rožė') {
+        continue;
+    }
+    console.log(objektas[gelyte]);
+}
+
+
+// sukurkite masyvą su 5 elementais kurie yra random skaičiai nuo 5 iki 10;
+
+const m = [];
+for (let i = 0; i < 5; i++) {
+    const sk = rand(5, 10);
+    m.push(sk);
+}
+
+console.log(m);
