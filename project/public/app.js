@@ -23,48 +23,58 @@ function _checkPrivateRedeclaration(e, t) { if (t.has(e)) throw new TypeError("C
 function _classPrivateFieldGet(s, a) { return s.get(_assertClassBrand(s, a)); }
 function _classPrivateFieldSet(s, a, r) { return s.set(_assertClassBrand(s, a), r), r; }
 function _assertClassBrand(e, t, n) { if ("function" == typeof e ? e === t : e.has(t)) return arguments.length < 3 ? t : n; throw new TypeError("Private element is not present on this object"); }
-var _x = /*#__PURE__*/new WeakMap();
-var _y = /*#__PURE__*/new WeakMap();
 var _color = /*#__PURE__*/new WeakMap();
 var _gate = /*#__PURE__*/new WeakMap();
 var _activeColor = /*#__PURE__*/new WeakMap();
 var _el = /*#__PURE__*/new WeakMap();
-var _size = /*#__PURE__*/new WeakMap();
 var Sq = /*#__PURE__*/function () {
   function Sq(x, y, size) {
     var color = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'transparent';
     _classCallCheck(this, Sq);
-    _classPrivateFieldInitSpec(this, _x, void 0);
-    _classPrivateFieldInitSpec(this, _y, void 0);
     _classPrivateFieldInitSpec(this, _color, void 0);
     _classPrivateFieldInitSpec(this, _gate, false);
     _classPrivateFieldInitSpec(this, _activeColor, void 0);
     _classPrivateFieldInitSpec(this, _el, void 0);
-    _classPrivateFieldInitSpec(this, _size, void 0);
-    _classPrivateFieldSet(_x, this, x);
-    _classPrivateFieldSet(_y, this, y);
     _classPrivateFieldSet(_color, this, color);
-    _classPrivateFieldSet(_size, this, size);
     _classPrivateFieldSet(_el, this, document.createElement('div'));
-    _classPrivateFieldGet(_el, this).style.left = _classPrivateFieldGet(_x, this) + 'px';
-    _classPrivateFieldGet(_el, this).style.top = _classPrivateFieldGet(_y, this) + 'px';
-    _classPrivateFieldGet(_el, this).style.width = _classPrivateFieldGet(_size, this) + 'px';
-    _classPrivateFieldGet(_el, this).style.height = _classPrivateFieldGet(_size, this) + 'px';
+    _classPrivateFieldGet(_el, this).style.left = x + 'px';
+    _classPrivateFieldGet(_el, this).style.top = y + 'px';
+    _classPrivateFieldGet(_el, this).style.width = size + 'px';
+    _classPrivateFieldGet(_el, this).style.height = size + 'px';
     _classPrivateFieldGet(_el, this).style.backgroundColor = _classPrivateFieldGet(_color, this);
+    _classPrivateFieldGet(_el, this).style.position = 'absolute';
   }
   return _createClass(Sq, [{
     key: "addTo",
     value: function addTo(parent) {
+      var _this = this;
+      var mode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'view';
       parent.appendChild(_classPrivateFieldGet(_el, this));
+      if (mode == 'view') {
+        return;
+      }
       _classPrivateFieldGet(_el, this).addEventListener('mouseover', function (_) {
-        console.log('OK');
+        if (_classPrivateFieldGet(_gate, _this)) {
+          _classPrivateFieldSet(_color, _this, _classPrivateFieldGet(_activeColor, _this));
+          _classPrivateFieldGet(_el, _this).style.backgroundColor = _classPrivateFieldGet(_color, _this);
+        }
       });
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      _classPrivateFieldSet(_color, this, 'transparent');
+      _classPrivateFieldGet(_el, this).style.backgroundColor = _classPrivateFieldGet(_color, this);
     }
   }, {
     key: "open",
     value: function open(gate) {
       _classPrivateFieldSet(_gate, this, gate);
     }
+
+    /**
+     * @param {string} color
+     */
   }, {
     key: "activeColor",
     set: function set(color) {
@@ -88,7 +98,7 @@ console.log('Labas, Projektai');
 
 var A = new _Sq__WEBPACK_IMPORTED_MODULE_0__["default"](0, 0, 300, 'crimson');
 var b = document.querySelector('body');
-A.addTo(b);
+A.addTo(b, 'edit');
 
 /***/ }),
 
