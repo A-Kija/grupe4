@@ -22,8 +22,10 @@ export default class Sq {
             return;
         }
         this.#el.addEventListener('mouseover', _ => {
+            
             if (this.#gate) {
                 this.#color = this.#activeColor;
+                console.log(this.#color);
                 this.#el.style.backgroundColor = this.#color;
             }
         });
