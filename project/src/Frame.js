@@ -17,13 +17,13 @@ export default class Frame {
         if (typeof frameSizeOrFrameData === 'number') {
             this.#frameSize = frameSizeOrFrameData;
             this.#data = null;
-        } else if (typeof frameSizeOrFrameData === 'object' && Array.isArray(frameSizeOrFrameData)) {
+        } else {
             this.#frameSize = Math.sqrt(frameSizeOrFrameData.length);
             this.#data = frameSizeOrFrameData;
-        } else {
-            throw new Error('Invalid argument: frameSizeOrFrameData must be a number or an array');
         }
         this.makeFrame();
+
+
     }
 
 
@@ -39,6 +39,17 @@ export default class Frame {
                 sqNumber++;
             }
         }
+
+        if (this.#mode == 'view') {
+            return;
+        }
+
+        document.addEventListener('mousedown', _ => this.openGates());
+        document.addEventListener('mouseup', _ => this.closeGates());
+    }
+
+    reset() {
+        this.#sqs.forEach(sq => sq.reset());
     }
 
     openGates() {
