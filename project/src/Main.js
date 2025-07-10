@@ -44,7 +44,7 @@ export default class Main extends LS {
 
         saveButton.addEventListener('click', _ => {
             this.store({
-                frame,
+                frame: frame.export(),
                 title: titleInput.value
             });
         });

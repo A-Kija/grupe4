@@ -39,6 +39,10 @@ export default class Sq {
         this.#gate = gate;
     }
 
+    get color() {
+        return this.#color;
+    }
+
 
     /**
      * @param {string} color
