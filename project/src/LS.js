@@ -17,13 +17,15 @@ export default class LS {
     }
 
     static write(data) {
-        localStorage.setItem(this.key, data)
+        localStorage.setItem(this.key, JSON.stringify(data))
     }
+    
+    // CRUD
     
     static store(data) {
         const id = v4();
         data.id = id;
-        this.write(this.read().push(data));
+        this.write([...this.read(), data]);
     }
 
 }
