@@ -14,8 +14,29 @@ export default class Main extends LS {
             this.initCreate();
         } else if (document.querySelector('[data-read]')) {
             this.initRead();
+        } else if (document.querySelector('[data-delete]')) {
+            this.initDelete();
         }
     }
+
+
+    static initDelete() {
+        const frames = this.read();
+        const id = window.location.hash.slice(1); // id paemimas is hastago
+        const frame = frames.find(f => f.id == id);
+        if (!frame) {
+            window.location.href = 'read.html'; // puslapio redirectas
+        }
+        document.querySelector('[data-art-title]').innerText = frame.title;
+        const destroyButton = document.querySelector('[data-destroy]');
+
+        destroyButton.addEventListener('click', _ => {
+            this.destroy(frame.id);
+            window.location.href = 'read.html';
+        });
+
+    }
+
 
     static initRead() {
 
@@ -27,6 +48,10 @@ export default class Main extends LS {
             const clone = template.content.cloneNode(true);
 
             clone.querySelector('[data-title]').textContent = activeFrame.title;
+
+            clone.querySelector('[data-edit]').setAttribute('href', 'edit.html#' + activeFrame.id);
+            clone.querySelector('[data-delete]').setAttribute('href', 'delete.html#' + activeFrame.id);
+            clone.querySelector('[data-show]').setAttribute('href', 'show.html#' + activeFrame.id);
 
             const f = clone.querySelector('[data-frame]');
 

@@ -27,6 +27,10 @@ export default class LS {
         this.write([...this.read(), data]);
     }
 
+    static destroy(id) {
+        this.write(this.read().filter(f => f.id != id));
+    }
+
 
 
 }

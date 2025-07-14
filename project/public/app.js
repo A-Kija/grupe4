@@ -360,6 +360,13 @@ var LS = /*#__PURE__*/function () {
       data.id = id;
       this.write([].concat(_toConsumableArray(this.read()), [data]));
     }
+  }, {
+    key: "destroy",
+    value: function destroy(id) {
+      this.write(this.read().filter(function (f) {
+        return f.id != id;
+      }));
+    }
   }]);
 }();
 _defineProperty(LS, "key", void 0);
@@ -410,7 +417,28 @@ var Main = /*#__PURE__*/function (_LS) {
         this.initCreate();
       } else if (document.querySelector('[data-read]')) {
         this.initRead();
+      } else if (document.querySelector('[data-delete]')) {
+        this.initDelete();
       }
+    }
+  }, {
+    key: "initDelete",
+    value: function initDelete() {
+      var _this = this;
+      var frames = this.read();
+      var id = window.location.hash.slice(1); // id paemimas is hastago
+      var frame = frames.find(function (f) {
+        return f.id == id;
+      });
+      if (!frame) {
+        window.location.href = 'read.html'; // puslapio redirectas
+      }
+      document.querySelector('[data-art-title]').innerText = frame.title;
+      var destroyButton = document.querySelector('[data-destroy]');
+      destroyButton.addEventListener('click', function (_) {
+        _this.destroy(frame.id);
+        window.location.href = 'read.html';
+      });
     }
   }, {
     key: "initRead",
@@ -421,6 +449,9 @@ var Main = /*#__PURE__*/function (_LS) {
       frames.forEach(function (activeFrame) {
         var clone = template.content.cloneNode(true);
         clone.querySelector('[data-title]').textContent = activeFrame.title;
+        clone.querySelector('[data-edit]').setAttribute('href', 'edit.html#' + activeFrame.id);
+        clone.querySelector('[data-delete]').setAttribute('href', 'delete.html#' + activeFrame.id);
+        clone.querySelector('[data-show]').setAttribute('href', 'show.html#' + activeFrame.id);
         var f = clone.querySelector('[data-frame]');
         var frame = new _Frame__WEBPACK_IMPORTED_MODULE_0__["default"](4, activeFrame.frame, f, 'view');
         frame.addBorders('gray', 1);
@@ -430,7 +461,7 @@ var Main = /*#__PURE__*/function (_LS) {
   }, {
     key: "initCreate",
     value: function initCreate() {
-      var _this = this;
+      var _this2 = this;
       var f = document.querySelector('[data-create-frame]');
       var colorInput = document.querySelector('[type="color"]');
       var titleInput = document.querySelector('input[data-title]');
@@ -446,7 +477,7 @@ var Main = /*#__PURE__*/function (_LS) {
         frame.reset();
       });
       saveButton.addEventListener('click', function (_) {
-        _this.store({
+        _this2.store({
           frame: frame["export"](),
           title: titleInput.value
         });
