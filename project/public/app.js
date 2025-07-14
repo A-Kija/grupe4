@@ -262,6 +262,13 @@ var Frame = /*#__PURE__*/function () {
       });
     }
   }, {
+    key: "ai",
+    value: function ai() {
+      _classPrivateFieldGet(_sqs, this).forEach(function (sq) {
+        return sq.custom('#' + Math.floor(Math.random() * 16777215).toString(16).padEnd(6, '0'));
+      });
+    }
+  }, {
     key: "openGates",
     value: function openGates() {
       _classPrivateFieldGet(_sqs, this).forEach(function (sq) {
@@ -317,6 +324,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/v4.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -356,15 +365,24 @@ var LS = /*#__PURE__*/function () {
   }, {
     key: "store",
     value: function store(data) {
-      var id = (0,uuid__WEBPACK_IMPORTED_MODULE_0__["default"])();
-      data.id = id;
-      this.write([].concat(_toConsumableArray(this.read()), [data]));
+      this.write([].concat(_toConsumableArray(this.read()), [_objectSpread(_objectSpread({}, data), {}, {
+        id: (0,uuid__WEBPACK_IMPORTED_MODULE_0__["default"])()
+      })]));
     }
   }, {
     key: "destroy",
     value: function destroy(id) {
       this.write(this.read().filter(function (f) {
         return f.id != id;
+      }));
+    }
+  }, {
+    key: "update",
+    value: function update(id, data) {
+      this.write(this.read().map(function (f) {
+        return f.id == id ? _objectSpread(_objectSpread(_objectSpread({}, f), data), {}, {
+          id: id
+        }) : f;
       }));
     }
   }]);
@@ -419,7 +437,26 @@ var Main = /*#__PURE__*/function (_LS) {
         this.initRead();
       } else if (document.querySelector('[data-delete]')) {
         this.initDelete();
+      } else if (document.querySelector('[data-edit]')) {
+        this.initEdit();
+      } else if (document.querySelector('[data-show]')) {
+        this.initShow();
       }
+    }
+  }, {
+    key: "initShow",
+    value: function initShow() {
+      var frames = this.read();
+      var id = window.location.hash.slice(1); // id paemimas is hastago
+      var frameToShow = frames.find(function (f) {
+        return f.id == id;
+      });
+      if (!frameToShow) {
+        window.location.href = 'read.html'; // puslapio redirectas
+      }
+      var f = document.querySelector('[data-frame]');
+      var frame = new _Frame__WEBPACK_IMPORTED_MODULE_0__["default"](24, frameToShow.frame, f, 'view');
+      frame.addBorders('transparent', 1);
     }
   }, {
     key: "initDelete",
@@ -459,15 +496,24 @@ var Main = /*#__PURE__*/function (_LS) {
       });
     }
   }, {
-    key: "initCreate",
-    value: function initCreate() {
+    key: "initEdit",
+    value: function initEdit() {
       var _this2 = this;
-      var f = document.querySelector('[data-create-frame]');
+      var frames = this.read();
+      var id = window.location.hash.slice(1); // id paemimas is hastago
+      var frameToEdit = frames.find(function (f) {
+        return f.id == id;
+      });
+      if (!frameToEdit) {
+        window.location.href = 'read.html'; // puslapio redirectas
+      }
+      var f = document.querySelector('[data-edit-frame]');
       var colorInput = document.querySelector('[type="color"]');
       var titleInput = document.querySelector('input[data-title]');
       var saveButton = document.querySelector('button[data-save]');
       var clear = document.querySelector('button[data-clear]');
-      var frame = new _Frame__WEBPACK_IMPORTED_MODULE_0__["default"](10, 20, f, 'create');
+      titleInput.value = frameToEdit.title;
+      var frame = new _Frame__WEBPACK_IMPORTED_MODULE_0__["default"](10, frameToEdit.frame, f, 'edit');
       frame.addBorders('gray', 1);
       frame.setActiveColor(colorInput.value);
       colorInput.addEventListener('change', function (e) {
@@ -477,7 +523,37 @@ var Main = /*#__PURE__*/function (_LS) {
         frame.reset();
       });
       saveButton.addEventListener('click', function (_) {
-        _this2.store({
+        _this2.update(frameToEdit.id, {
+          frame: frame["export"](),
+          title: titleInput.value
+        });
+        window.location.href = 'read.html';
+      });
+    }
+  }, {
+    key: "initCreate",
+    value: function initCreate() {
+      var _this3 = this;
+      var f = document.querySelector('[data-create-frame]');
+      var colorInput = document.querySelector('[type="color"]');
+      var titleInput = document.querySelector('input[data-title]');
+      var saveButton = document.querySelector('button[data-save]');
+      var clear = document.querySelector('button[data-clear]');
+      var aiButton = document.querySelector('button[data-ai]');
+      var frame = new _Frame__WEBPACK_IMPORTED_MODULE_0__["default"](10, 20, f, 'create');
+      frame.addBorders('gray', 1);
+      frame.setActiveColor(colorInput.value);
+      colorInput.addEventListener('change', function (e) {
+        frame.setActiveColor(e.target.value);
+      });
+      clear.addEventListener('click', function (_) {
+        frame.reset();
+      });
+      aiButton.addEventListener('click', function (_) {
+        frame.ai();
+      });
+      saveButton.addEventListener('click', function (_) {
+        _this3.store({
           frame: frame["export"](),
           title: titleInput.value
         });
@@ -554,6 +630,12 @@ var Sq = /*#__PURE__*/function () {
     key: "reset",
     value: function reset() {
       _classPrivateFieldSet(_color, this, 'transparent');
+      _classPrivateFieldGet(_el, this).style.backgroundColor = _classPrivateFieldGet(_color, this);
+    }
+  }, {
+    key: "custom",
+    value: function custom(color) {
+      _classPrivateFieldSet(_color, this, color);
       _classPrivateFieldGet(_el, this).style.backgroundColor = _classPrivateFieldGet(_color, this);
     }
   }, {

@@ -34,6 +34,11 @@ export default class Sq {
         this.#el.style.backgroundColor = this.#color;
     }
 
+    custom(color) {
+        this.#color = color;
+        this.#el.style.backgroundColor = this.#color;
+    }
+
 
     open(gate) {
         this.#gate = gate;
