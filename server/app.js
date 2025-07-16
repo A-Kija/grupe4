@@ -8,7 +8,10 @@ app.use(express.static('public'));
 // Router
 
 app.get('/', (req, res) => {
-  res.send('Labas, mano mielasis pasauli!');
+
+  const labasX20 = 'Labas '.repeat(120);
+
+  res.send(labasX20);
 });
 
 //
