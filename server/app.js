@@ -1,6 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const fs = require('node:fs');
 const app = express();
 const port = 80;
+
+app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
@@ -9,7 +14,7 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
 
-  const labasX20 = 'Labas '.repeat(120);
+  const labasX20 = 'Labas';
 
   res.send(labasX20);
 });
@@ -22,7 +27,7 @@ app.get('/mielas/barsukas', (req, res) => {
   res.send('Labas, Barsukai!');
 });
 
-app.get('/spalva/:col', (req, res) => {
+app.get('/spalva/:col/rodyti', (req, res) => {
 
   const C = req.params.col;
 
@@ -68,6 +73,43 @@ app.get('/plus-vienuolika', (req, res) => {
 
 });
 
+
+
+app.get('/kvadratas/:dydis', (req, res) => {
+  const dydis = parseInt(req.params.dydis);
+
+  let atsakymas = '<div style="display: grid; grid-template-columns: repeat(' + dydis + ', 1fr);">';
+  for (let i = 0; i < dydis * dydis; i++)
+  {
+    atsakymas += '<div style="border: 1px solid black; padding: 10px; text-align: center;">' + (i + 1) + '</div>';
+  }
+
+  atsakymas += '</div>';
+  res.send(atsakymas);
+
+});
+
+
+app.post('/animal', (req, res) => {
+
+  console.log(req.body);
+
+  let data = req.body; // duomenu masyvas
+ 
+  let file = fs.readFileSync('./data.json', 'utf8'); // failo stringas
+  file = JSON.parse(file); // failo masyva
+
+  file.push(data); // failo masyvas + duomenu objektas
+
+  file = JSON.stringify(file); // failo vertimas i stringa
+
+  fs.writeFileSync('./data.json', file); // failo stringo rasymas i faila
+
+  res.json({
+    success: true,
+    message: 'Gyvūnas ir jo uodega pridėti'
+  })
+});
 
 
 //
