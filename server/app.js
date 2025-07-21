@@ -69,7 +69,7 @@ app.get('/plus-vienuolika', (req, res) => {
   const sk1 = parseInt(req.query.skaicius1 || 0);
   const sk2 = parseInt(req.query.skaicius2 || 0);
 
-  res.send(11 + sk1 + sk2  + '');
+  res.send(11 + sk1 + sk2 + '');
 
 });
 
@@ -79,8 +79,7 @@ app.get('/kvadratas/:dydis', (req, res) => {
   const dydis = parseInt(req.params.dydis);
 
   let atsakymas = '<div style="display: grid; grid-template-columns: repeat(' + dydis + ', 1fr);">';
-  for (let i = 0; i < dydis * dydis; i++)
-  {
+  for (let i = 0; i < dydis * dydis; i++) {
     atsakymas += '<div style="border: 1px solid black; padding: 10px; text-align: center;">' + (i + 1) + '</div>';
   }
 
@@ -95,7 +94,7 @@ app.post('/animal', (req, res) => {
   console.log(req.body);
 
   let data = req.body; // duomenu masyvas
- 
+
   let file = fs.readFileSync('./data.json', 'utf8'); // failo stringas
   file = JSON.parse(file); // failo masyva
 
@@ -109,6 +108,37 @@ app.post('/animal', (req, res) => {
     success: true,
     message: 'Gyvūnas ir jo uodega pridėti'
   })
+});
+
+
+app.get('/animal-csr', (req, res) => {
+
+  let file = fs.readFileSync('./data.json', 'utf8'); // failo stringas
+  file = JSON.parse(file); // failo masyva
+
+  res.json({
+    success: true,
+    animals: file
+  });
+
+});
+
+
+app.get('/animal-ssr', (req, res) => {
+
+  let file = fs.readFileSync('./data.json', 'utf8'); // failo stringas
+  file = JSON.parse(file); // failo masyva
+
+  let html = '';
+  file.forEach(animalData => {
+    html += `<li>${animalData.animal} - ${animalData.tail} cm</li>`;
+  });
+
+  res.json({
+    success: true,
+    html: html
+  });
+
 });
 
 
