@@ -24,20 +24,24 @@ app.get('/', (req, res) => {
 
     res.cookie('kartai', counter, { maxAge: day }); // irasome kuki
 
- 
-
-
     res.send(`
         Hello ${counter} Cookie!
         <a href="http://localhost:3000/reset/">TRINTI</a>
     `);
 });
 
+
+
 app.get('/reset', (req, res) => {
 
-       res.clearCookie('kartai'); //istrina cookie uzdedant praeities laika
+    setTimeout(_ => {
 
-       res.redirect('http://localhost:3000/');
+        res.clearCookie('kartai'); //istrina cookie uzdedant praeities laika
+
+        res.redirect('http://localhost:3000/');
+
+    }, 5000);
+
 
 });
 
