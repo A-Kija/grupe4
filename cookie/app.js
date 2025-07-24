@@ -17,15 +17,22 @@ app.use((req, res, next) => {
     if (token) {
         let users = fs.readFileSync('./users.json', 'utf8');
         users = JSON.parse(users);
+        const user = users.find(u => u.token === token);
+        if (user) {
+            req.user = {
+                name: user.name,
+                email: user.email
+            }
+        } else {
+            req.user = null;
+        }
+    } else {
+        req.user = null;
     }
-
-
-
-
 
     const url = req.originalUrl;
 
-    if (url === '/profile') {
+    if (url === '/profile' && !req.user) {
         res.status(401).send('Unauthorized');
         return;
     }
@@ -75,8 +82,21 @@ app.get('/reset', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
+
+    if (req.user) {
+        res.redirect('http://localhost:3000/');
+        return;
+    }
+
     const file = fs.readFileSync('./templates/login.html', 'utf8');
     res.send(file);
+});
+
+app.post('/logout', (req, res) => {
+    res.clearCookie('session');
+    res.json({
+        success: true
+    });
 });
 
 
@@ -116,9 +136,11 @@ app.post('/login', (req, res) => {
 
 app.get('/profile', (req, res) => {
 
+    const userName = req.user.name
 
-    res.send(`<h1>Profile</h1>`);
-
+    let file = fs.readFileSync('./templates/profile.html', 'utf8');
+    file = file.replace('{{userName}}', userName);
+    res.send(file);
 
 });
 
