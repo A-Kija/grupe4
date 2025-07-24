@@ -11,6 +11,7 @@ if (loginForm) {
     const emailInput = loginForm.querySelector('[name="email"]');
     const pswInput = loginForm.querySelector('[name="password"]');
     const loginButton = loginForm.querySelector('button');
+    const responseDiv = document.querySelector('[data-response]');
 
     loginButton.addEventListener('click', _ => {
         axios.post(
@@ -23,6 +24,14 @@ if (loginForm) {
         )
         .then(res => {
             console.log(res.data)
+            if (!res.data.success) {
+                responseDiv.innerText = res.data.message;
+            } else {
+                responseDiv.innerText = res.data.message;
+                setTimeout(_ => {
+                    window.location.href = 'http://localhost:3000';
+                }, 1000);
+            }
         })
     });
 

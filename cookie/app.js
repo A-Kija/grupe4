@@ -11,6 +11,30 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 
+app.use((req, res, next) => {
+
+    const token = req.cookies.session || '';
+    if (token) {
+        let users = fs.readFileSync('./users.json', 'utf8');
+        users = JSON.parse(users);
+    }
+
+
+
+
+
+    const url = req.originalUrl;
+
+    if (url === '/profile') {
+        res.status(401).send('Unauthorized');
+        return;
+    }
+
+    next();
+});
+
+
+
 app.get('/', (req, res) => {
 
     let counter;
@@ -50,6 +74,13 @@ app.get('/reset', (req, res) => {
 
 });
 
+app.get('/login', (req, res) => {
+    const file = fs.readFileSync('./templates/login.html', 'utf8');
+    res.send(file);
+});
+
+
+
 app.post('/login', (req, res) => {
 
     const email = req.body.email;
@@ -64,22 +95,30 @@ app.post('/login', (req, res) => {
         res.json({
             success: false,
             message: 'User email or password invalid'
-        })
+        });
+    } else {
+
+        const token = md5(Math.random() + 'SALT 2587415468'); // psuedo atsitiktinis stringas
+
+        user.token = token;
+        users = JSON.stringify(users);
+        fs.writeFileSync('./users.json', users);
+
+        res.cookie('session', token);
+
+        res.json({
+            success: true,
+            message: 'Welcome!',
+        });
     }
 
-    const token = md5(Math.random() + 'SALT 2587415468'); // psuedo atsitiktinis stringas
+});
 
-    user.token = token;
-    users = JSON.stringify(users);
-    fs.writeFileSync('./users.json', users);
+app.get('/profile', (req, res) => {
 
-    res.cookie('session', token);
 
-    res.json({
-        success: true,
-        message: 'Welcome!',
-        name: user.name
-    });
+    res.send(`<h1>Profile</h1>`);
+
 
 });
 
