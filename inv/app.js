@@ -7069,6 +7069,183 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/uuid/dist/esm-browser/native.js":
+/*!******************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/native.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({ randomUUID });
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/regex.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/regex.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/i);
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/rng.js":
+/*!***************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/rng.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ rng)
+/* harmony export */ });
+let getRandomValues;
+const rnds8 = new Uint8Array(16);
+function rng() {
+    if (!getRandomValues) {
+        if (typeof crypto === 'undefined' || !crypto.getRandomValues) {
+            throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+        }
+        getRandomValues = crypto.getRandomValues.bind(crypto);
+    }
+    return getRandomValues(rnds8);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/stringify.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/stringify.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   unsafeStringify: () => (/* binding */ unsafeStringify)
+/* harmony export */ });
+/* harmony import */ var _validate_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./validate.js */ "./node_modules/uuid/dist/esm-browser/validate.js");
+
+const byteToHex = [];
+for (let i = 0; i < 256; ++i) {
+    byteToHex.push((i + 0x100).toString(16).slice(1));
+}
+function unsafeStringify(arr, offset = 0) {
+    return (byteToHex[arr[offset + 0]] +
+        byteToHex[arr[offset + 1]] +
+        byteToHex[arr[offset + 2]] +
+        byteToHex[arr[offset + 3]] +
+        '-' +
+        byteToHex[arr[offset + 4]] +
+        byteToHex[arr[offset + 5]] +
+        '-' +
+        byteToHex[arr[offset + 6]] +
+        byteToHex[arr[offset + 7]] +
+        '-' +
+        byteToHex[arr[offset + 8]] +
+        byteToHex[arr[offset + 9]] +
+        '-' +
+        byteToHex[arr[offset + 10]] +
+        byteToHex[arr[offset + 11]] +
+        byteToHex[arr[offset + 12]] +
+        byteToHex[arr[offset + 13]] +
+        byteToHex[arr[offset + 14]] +
+        byteToHex[arr[offset + 15]]).toLowerCase();
+}
+function stringify(arr, offset = 0) {
+    const uuid = unsafeStringify(arr, offset);
+    if (!(0,_validate_js__WEBPACK_IMPORTED_MODULE_0__["default"])(uuid)) {
+        throw TypeError('Stringified UUID is invalid');
+    }
+    return uuid;
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (stringify);
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/v4.js":
+/*!**************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/v4.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _native_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./native.js */ "./node_modules/uuid/dist/esm-browser/native.js");
+/* harmony import */ var _rng_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rng.js */ "./node_modules/uuid/dist/esm-browser/rng.js");
+/* harmony import */ var _stringify_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stringify.js */ "./node_modules/uuid/dist/esm-browser/stringify.js");
+
+
+
+function v4(options, buf, offset) {
+    if (_native_js__WEBPACK_IMPORTED_MODULE_0__["default"].randomUUID && !buf && !options) {
+        return _native_js__WEBPACK_IMPORTED_MODULE_0__["default"].randomUUID();
+    }
+    options = options || {};
+    const rnds = options.random ?? options.rng?.() ?? (0,_rng_js__WEBPACK_IMPORTED_MODULE_1__["default"])();
+    if (rnds.length < 16) {
+        throw new Error('Random bytes length must be >= 16');
+    }
+    rnds[6] = (rnds[6] & 0x0f) | 0x40;
+    rnds[8] = (rnds[8] & 0x3f) | 0x80;
+    if (buf) {
+        offset = offset || 0;
+        if (offset < 0 || offset + 16 > buf.length) {
+            throw new RangeError(`UUID byte range ${offset}:${offset + 15} is out of buffer bounds`);
+        }
+        for (let i = 0; i < 16; ++i) {
+            buf[offset + i] = rnds[i];
+        }
+        return buf;
+    }
+    return (0,_stringify_js__WEBPACK_IMPORTED_MODULE_2__.unsafeStringify)(rnds);
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (v4);
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/validate.js":
+/*!********************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/validate.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _regex_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./regex.js */ "./node_modules/uuid/dist/esm-browser/regex.js");
+
+function validate(uuid) {
+    return typeof uuid === 'string' && _regex_js__WEBPACK_IMPORTED_MODULE_0__["default"].test(uuid);
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (validate);
+
+
+/***/ }),
+
 /***/ "./src/app.js":
 /*!********************!*\
   !*** ./src/app.js ***!
@@ -7078,54 +7255,131 @@ process.umask = function() { return 0; };
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/v4.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
+
+var localStorageKey = 'inv';
 var apiUrl = 'https://in3.dev/inv/';
-function renderInvoice() {
+var newInvoiceData;
+function newInvoice() {
   axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(apiUrl).then(function (res) {
-    var invoice = res.data;
-    function formatDiscount(discount) {
-      if (!discount || Array.isArray(discount)) return '-';
-      if (discount.type === 'fixed') return discount.value.toFixed(2);
-      if (discount.type === 'percentage') return discount.value + '%';
-      return '-';
+    renderInvoice(res.data);
+    newInvoiceData = res.data;
+  })["catch"](function (error) {
+    console.error('Klaida gaunant duomenis:', error);
+    var invoiceSection = document.querySelector('[data-invoice]');
+    invoiceSection.innerHTML = "<div class=\"alert alert-danger\">Nepavyko gauti duomen\u0173.</div>";
+  });
+}
+function renderInvoice(data) {
+  var invoice = data;
+  function formatDiscount(discount) {
+    if (!discount || Array.isArray(discount)) return '-';
+    if (discount.type === 'fixed') return discount.value.toFixed(2);
+    if (discount.type === 'percentage') return discount.value + '%';
+    return '-';
+  }
+  function calcItemTotal(item) {
+    var price = item.price * item.quantity;
+    if (item.discount && !Array.isArray(item.discount)) {
+      if (item.discount.type === 'fixed') price -= item.discount.value;
+      if (item.discount.type === 'percentage') price -= price * (item.discount.value / 100);
     }
-    function calcItemTotal(item) {
+    return price;
+  }
+  var itemsHtml = invoice.items.map(function (item, i) {
+    return "\n            <tr>\n                <td>".concat(i + 1, "</td>\n                <td>").concat(item.description, "</td>\n                <td>").concat(item.quantity, "</td>\n                <td>").concat(item.price, "</td>\n                <td>").concat(formatDiscount(item.discount), "</td>\n                <td>").concat(calcItemTotal(item).toLocaleString('lt-LT', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }), "</td>\n            </tr>\n        ");
+  }).join('');
+  var itemsTotal = invoice.items.reduce(function (sum, item) {
+    return sum + calcItemTotal(item);
+  }, 0);
+  var withShippingTotal = itemsTotal + (invoice.shippingPrice || 0);
+  var vat = withShippingTotal * 0.21;
+  var grandTotal = withShippingTotal + vat;
+  var html = "\n        <div class=\"container my-5\">\n            <div class=\"row mb-4\">\n                <div class=\"col-md-12 text-md-start mb-3\">\n                    <h2>S\u0105skaita fakt\u016Bra</h2>\n                    <p class=\"mb-0\"><strong>Nr.:</strong> ".concat(invoice.number, "</p>\n                    <p class=\"mb-0\"><strong>Data:</strong> ").concat(invoice.date, "</p>\n                    <p class=\"mb-0\"><strong>Apmok\u0117ti iki:</strong> ").concat(invoice.due_date, "</p>\n                </div>\n                <div class=\"col-md-6 text-md-start\">\n                    <h5>Pardav\u0117jas</h5>\n                    <p><strong>").concat(invoice.company.seller.name, "</strong><br>\n                        ").concat(invoice.company.seller.address, "<br>\n                        \u012Emon\u0117s kodas: ").concat(invoice.company.seller.code, "<br>\n                        PVM kodas: ").concat(invoice.company.seller.vat, "<br>\n                        Tel.: ").concat(invoice.company.seller.phone, "<br>\n                        El. pa\u0161tas: ").concat(invoice.company.seller.email, "\n                    </p>\n                </div>\n                <div class=\"col-md-6 text-md-start\">\n                    <h5>Pirk\u0117jas</h5>\n                    <p><strong>").concat(invoice.company.buyer.name, "</strong><br>\n                        ").concat(invoice.company.buyer.address, "<br>\n                        \u012Emon\u0117s kodas: ").concat(invoice.company.buyer.code, "<br>\n                        PVM kodas: ").concat(invoice.company.buyer.vat, "<br>\n                        Tel.: ").concat(invoice.company.buyer.phone, "<br>\n                        El. pa\u0161tas: ").concat(invoice.company.buyer.email, "\n                    </p>\n                </div>\n            </div>\n            <div class=\"table-responsive mb-4\">\n                <table class=\"table table-bordered align-middle\">\n                    <thead class=\"table-light\">\n                        <tr>\n                            <th>#</th>\n                            <th>Prek\u0117s apra\u0161ymas</th>\n                            <th>Kiekis</th>\n                            <th>Kaina (\u20AC)</th>\n                            <th>Nuolaida</th>\n                            <th>Suma (\u20AC)</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        ").concat(itemsHtml, "\n                    </tbody>\n                    <tfoot>\n                        <tr>\n                            <td colspan=\"5\" class=\"text-end\">Pristatymas</td>\n                            <td>").concat((invoice.shippingPrice || 0).toLocaleString('lt-LT', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }), "</td>\n                        </tr>\n                        <tr>\n                            <td colspan=\"5\" class=\"text-end\">PVM (21%)</td>\n                            <td>").concat(vat.toLocaleString('lt-LT', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }), "</td>\n                        </tr>\n                        <tr>\n                            <td colspan=\"5\" class=\"text-end fw-bold\">I\u0161 viso</td>\n                            <td class=\"fw-bold\">").concat(grandTotal.toLocaleString('lt-LT', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }), "</td>\n                        </tr>\n                    </tfoot>\n                </table>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-md-6\">\n                    <p><strong>Pastabos:</strong> Pra\u0161ome apmok\u0117ti iki nurodytos datos.</p>\n                </div>\n            </div>\n        </div>\n    ");
+  var invoiceSection = document.querySelector('[data-invoice]');
+  invoiceSection.innerHTML = html;
+}
+function createInvoice(data) {
+  var invoiceId = (0,uuid__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  var storedInvoices = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+  var invoiceToSave = _objectSpread({
+    id: invoiceId
+  }, data);
+  storedInvoices.push(invoiceToSave);
+  localStorage.setItem(localStorageKey, JSON.stringify(storedInvoices));
+}
+function invoicesList() {
+  var storedInvoices = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+  var invoiceListSection = document.querySelector('[data-invoices-list]');
+  if (storedInvoices.length === 0) {
+    invoiceListSection.innerHTML = "<div class=\"alert alert-info\">N\u0117ra s\u0105skait\u0173 fakt\u016Br\u0173.</div>";
+    return;
+  }
+  var html = "\n        ".concat(storedInvoices.map(function (invoice) {
+    var _invoice$company;
+    return "\n            <tr>\n                <td>".concat(invoice.number, "</td>\n                <td>").concat(invoice.date, "</td>\n                <td>").concat(((_invoice$company = invoice.company) === null || _invoice$company === void 0 || (_invoice$company = _invoice$company.buyer) === null || _invoice$company === void 0 ? void 0 : _invoice$company.name) || '-', "</td>\n                <td>").concat((invoice.items ? invoice.items.reduce(function (sum, item) {
       var price = item.price * item.quantity;
       if (item.discount && !Array.isArray(item.discount)) {
         if (item.discount.type === 'fixed') price -= item.discount.value;
         if (item.discount.type === 'percentage') price -= price * (item.discount.value / 100);
       }
-      return price;
-    }
-    var itemsHtml = invoice.items.map(function (item, i) {
-      return "\n            <tr>\n                <td>".concat(i + 1, "</td>\n                <td>").concat(item.description, "</td>\n                <td>").concat(item.quantity, "</td>\n                <td>").concat(item.price, "</td>\n                <td>").concat(formatDiscount(item.discount), "</td>\n                <td>").concat(calcItemTotal(item).toLocaleString('lt-LT', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }), "</td>\n            </tr>\n        ");
-    }).join('');
-    var itemsTotal = invoice.items.reduce(function (sum, item) {
-      return sum + calcItemTotal(item);
-    }, 0);
-    var withShippingTotal = itemsTotal + (invoice.shippingPrice || 0);
-    var vat = withShippingTotal * 0.21;
-    var grandTotal = withShippingTotal + vat;
-    var html = "\n            <div class=\"container my-5\">\n                <div class=\"row mb-4\">\n                    <div class=\"col-md-12 text-md-start mb-3\">\n                        <h2>S\u0105skaita fakt\u016Bra</h2>\n                        <p class=\"mb-0\"><strong>Nr.:</strong> ".concat(invoice.number, "</p>\n                        <p class=\"mb-0\"><strong>Data:</strong> ").concat(invoice.date, "</p>\n                        <p class=\"mb-0\"><strong>Apmok\u0117ti iki:</strong> ").concat(invoice.due_date, "</p>\n                    </div>\n                    <div class=\"col-md-6 text-md-start\">\n                        <h5>Pardav\u0117jas</h5>\n                        <p><strong>").concat(invoice.company.seller.name, "</strong><br>\n                            ").concat(invoice.company.seller.address, "<br>\n                            \u012Emon\u0117s kodas: ").concat(invoice.company.seller.code, "<br>\n                            PVM kodas: ").concat(invoice.company.seller.vat, "<br>\n                            Tel.: ").concat(invoice.company.seller.phone, "<br>\n                            El. pa\u0161tas: ").concat(invoice.company.seller.email, "\n                        </p>\n                    </div>\n                    <div class=\"col-md-6 text-md-start\">\n                        <h5>Pirk\u0117jas</h5>\n                        <p><strong>").concat(invoice.company.buyer.name, "</strong><br>\n                            ").concat(invoice.company.buyer.address, "<br>\n                            \u012Emon\u0117s kodas: ").concat(invoice.company.buyer.code, "<br>\n                            PVM kodas: ").concat(invoice.company.buyer.vat, "<br>\n                            Tel.: ").concat(invoice.company.buyer.phone, "<br>\n                            El. pa\u0161tas: ").concat(invoice.company.buyer.email, "\n                        </p>\n                    </div>\n                </div>\n                <div class=\"table-responsive mb-4\">\n                    <table class=\"table table-bordered align-middle\">\n                        <thead class=\"table-light\">\n                            <tr>\n                                <th>#</th>\n                                <th>Prek\u0117s apra\u0161ymas</th>\n                                <th>Kiekis</th>\n                                <th>Kaina (\u20AC)</th>\n                                <th>Nuolaida</th>\n                                <th>Suma (\u20AC)</th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            ").concat(itemsHtml, "\n                        </tbody>\n                        <tfoot>\n                            <tr>\n                                <td colspan=\"5\" class=\"text-end\">Pristatymas</td>\n                                <td>").concat((invoice.shippingPrice || 0).toLocaleString('lt-LT', {
+      return sum + price;
+    }, 0) + (invoice.shippingPrice || 0) : 0).toLocaleString('lt-LT', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
-    }), "</td>\n                            </tr>\n                            <tr>\n                                <td colspan=\"5\" class=\"text-end\">PVM (21%)</td>\n                                <td>").concat(vat.toLocaleString('lt-LT', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }), "</td>\n                            </tr>\n                            <tr>\n                                <td colspan=\"5\" class=\"text-end fw-bold\">I\u0161 viso</td>\n                                <td class=\"fw-bold\">").concat(grandTotal.toLocaleString('lt-LT', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }), "</td>\n                            </tr>\n                        </tfoot>\n                    </table>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-md-6\">\n                        <p><strong>Pastabos:</strong> Pra\u0161ome apmok\u0117ti iki nurodytos datos.</p>\n                    </div>\n                </div>\n            </div>\n        ");
-    document.body.innerHTML = html;
-  })["catch"](function (error) {
-    console.error('Klaida gaunant duomenis:', error);
-    document.body.innerHTML = "<div class=\"container my-5\"><div class=\"alert alert-danger\">Nepavyko gauti duomen\u0173.</div></div>";
+    }), "</td>\n                <td>\n                    <a href=\"http://127.0.0.1:5500/inv/view.html#").concat(invoice.id, "\" class=\"btn btn-primary btn-sm\">Per\u017Ei\u016Br\u0117ti</a>\n                </td>\n            </tr>\n        ");
+  }).join(''), "\n    ");
+  invoiceListSection.innerHTML = html;
+}
+function viewInvoice() {
+  var invoiceId = window.location.hash.slice(1);
+  var storedInvoices = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+  var invoice = storedInvoices.find(function (inv) {
+    return inv.id === invoiceId;
+  });
+  if (!invoice) {
+    var invoiceSection = document.querySelector('[data-invoice]');
+    invoiceSection.innerHTML = "<div class=\"alert alert-danger\">S\u0105skaita fakt\u016Bra nerasta.</div>";
+    return;
+  }
+  renderInvoice(invoice);
+}
+if (document.body.dataset.hasOwnProperty('new')) {
+  newInvoice();
+}
+if (document.body.dataset.hasOwnProperty('list')) {
+  invoicesList();
+}
+if (document.body.dataset.hasOwnProperty('view')) {
+  viewInvoice();
+}
+var createButtonSection = document.querySelector('[data-create-button]');
+if (createButtonSection) {
+  var createButton = createButtonSection.querySelector('[data-save]');
+  createButton.addEventListener('click', function (_) {
+    createInvoice(newInvoiceData);
+    window.location.href = "http://127.0.0.1:5500/inv/list.html";
   });
 }
-renderInvoice();
 
 /***/ }),
 
