@@ -190,6 +190,10 @@ function renderInvoice(data, editMode = false) {
                     return;
                 }
                 const discountType = document.querySelector(`input[name="discount-type-${i}"]:checked`);
+                if (!discountType) {
+                    const fixedRadio = invoiceSection.querySelector(`input[name="discount-type-${i}"][value="fixed"]`);
+                    fixedRadio.checked = true;
+                }
                 invoice.items[i].discount = {
                     value: newDiscountValue,
                     type: discountType ? discountType.value : 'fixed'
@@ -200,22 +204,27 @@ function renderInvoice(data, editMode = false) {
             });
         });
         const allDiscountTypes = invoiceSection.querySelectorAll('input[type="radio"]');
-        allDiscountTypes.forEach((radio, i) => {
+        allDiscountTypes.forEach(radio => {
             radio.addEventListener('change', _ => {
-                const discountValue = parseFloat(allDiscounts[i].value);
-                if (isNaN(discountValue) || discountValue < 0) {
-                    allDiscounts[i].value = invoice.items[i].discount?.value || 0; // Reset to original if invalid
-                    return;
-                }
-                invoice.items[i].discount = {
-                    value: discountValue,
+                const index = parseInt(radio.name.split('-')[2]);
+                invoice.items[index].discount = {
+                    value: invoice.items[index].discount?.value || 0,
                     type: radio.value
                 };
-                updateItemTotal(i);
+                console.log(`Radio changed for item ${index}: ${radio.value}`, invoice.items[index].discount);
+                updateItemTotal(index);
                 calcTotals();
                 updateTotals();
             });
         });
+
+        const updateButtonSection = document.querySelector('[data-update-button]');
+        if (updateButtonSection) {
+            const updateButton = updateButtonSection.querySelector('button');
+            updateButton.addEventListener('click', _ => {
+                updateInvoice(invoice);
+            });
+        }
     }
 }
 
@@ -225,6 +234,18 @@ function createInvoice(data) {
     const invoiceToSave = { id: invoiceId, ...data };
     storedInvoices.push(invoiceToSave);
     localStorage.setItem(localStorageKey, JSON.stringify(storedInvoices));
+}
+
+function updateInvoice(data) {
+    const invoiceId = data.id;
+    const storedInvoices = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+    const invoicesToSave = storedInvoices.map(inv => {
+        if (inv.id === invoiceId) {
+            return { ...inv, ...data };
+        }
+        return inv;
+    });
+    localStorage.setItem(localStorageKey, JSON.stringify(invoicesToSave));
 }
 
 function invoicesList() {
@@ -280,10 +301,6 @@ if (document.body.dataset.hasOwnProperty('new')) {
 
 if (document.body.dataset.hasOwnProperty('list')) {
     invoicesList();
-}
-
-if (document.body.dataset.hasOwnProperty('view')) {
-    viewInvoice();
 }
 
 if (document.body.dataset.hasOwnProperty('view')) {

@@ -7385,6 +7385,10 @@ function renderInvoice(data) {
           return;
         }
         var discountType = document.querySelector("input[name=\"discount-type-".concat(i, "\"]:checked"));
+        if (!discountType) {
+          var fixedRadio = invoiceSection.querySelector("input[name=\"discount-type-".concat(i, "\"][value=\"fixed\"]"));
+          fixedRadio.checked = true;
+        }
         invoice.items[i].discount = {
           value: newDiscountValue,
           type: discountType ? discountType.value : 'fixed'
@@ -7395,23 +7399,27 @@ function renderInvoice(data) {
       });
     });
     var allDiscountTypes = invoiceSection.querySelectorAll('input[type="radio"]');
-    allDiscountTypes.forEach(function (radio, i) {
+    allDiscountTypes.forEach(function (radio) {
       radio.addEventListener('change', function (_) {
-        var discountValue = parseFloat(allDiscounts[i].value);
-        if (isNaN(discountValue) || discountValue < 0) {
-          var _invoice$items$i$disc2;
-          allDiscounts[i].value = ((_invoice$items$i$disc2 = invoice.items[i].discount) === null || _invoice$items$i$disc2 === void 0 ? void 0 : _invoice$items$i$disc2.value) || 0; // Reset to original if invalid
-          return;
-        }
-        invoice.items[i].discount = {
-          value: discountValue,
+        var _invoice$items$index$;
+        var index = parseInt(radio.name.split('-')[2]);
+        invoice.items[index].discount = {
+          value: ((_invoice$items$index$ = invoice.items[index].discount) === null || _invoice$items$index$ === void 0 ? void 0 : _invoice$items$index$.value) || 0,
           type: radio.value
         };
-        updateItemTotal(i);
+        console.log("Radio changed for item ".concat(index, ": ").concat(radio.value), invoice.items[index].discount);
+        updateItemTotal(index);
         calcTotals();
         updateTotals();
       });
     });
+    var updateButtonSection = document.querySelector('[data-update-button]');
+    if (updateButtonSection) {
+      var updateButton = updateButtonSection.querySelector('button');
+      updateButton.addEventListener('click', function (_) {
+        updateInvoice(invoice);
+      });
+    }
   }
 }
 function createInvoice(data) {
@@ -7422,6 +7430,17 @@ function createInvoice(data) {
   }, data);
   storedInvoices.push(invoiceToSave);
   localStorage.setItem(localStorageKey, JSON.stringify(storedInvoices));
+}
+function updateInvoice(data) {
+  var invoiceId = data.id;
+  var storedInvoices = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+  var invoicesToSave = storedInvoices.map(function (inv) {
+    if (inv.id === invoiceId) {
+      return _objectSpread(_objectSpread({}, inv), data);
+    }
+    return inv;
+  });
+  localStorage.setItem(localStorageKey, JSON.stringify(invoicesToSave));
 }
 function invoicesList() {
   var storedInvoices = JSON.parse(localStorage.getItem(localStorageKey)) || [];
@@ -7465,9 +7484,6 @@ if (document.body.dataset.hasOwnProperty('new')) {
 }
 if (document.body.dataset.hasOwnProperty('list')) {
   invoicesList();
-}
-if (document.body.dataset.hasOwnProperty('view')) {
-  viewInvoice();
 }
 if (document.body.dataset.hasOwnProperty('view')) {
   viewInvoice();
