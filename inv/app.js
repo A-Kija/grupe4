@@ -7278,6 +7278,7 @@ function newInvoice() {
   });
 }
 function renderInvoice(data) {
+  var editMode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   var invoice = data;
   function formatDiscount(discount) {
     if (!discount || Array.isArray(discount)) return '-';
@@ -7294,29 +7295,124 @@ function renderInvoice(data) {
     return price;
   }
   var itemsHtml = invoice.items.map(function (item, i) {
-    return "\n            <tr>\n                <td>".concat(i + 1, "</td>\n                <td>").concat(item.description, "</td>\n                <td>").concat(item.quantity, "</td>\n                <td>").concat(item.price, "</td>\n                <td>").concat(formatDiscount(item.discount), "</td>\n                <td>").concat(calcItemTotal(item).toLocaleString('lt-LT', {
+    var _item$discount$value, _item$discount, _item$discount2, _item$discount3;
+    return "\n            <tr>\n                <td>".concat(i + 1, "</td>\n                <td>").concat(item.description, "</td>\n                <td>").concat(editMode ? "<input data-quantity type=\"number\" value=\"".concat(item.quantity, "\" class=\"form-control form-control-sm width-70\" />") : item.quantity, "</td>\n                <td>").concat(editMode ? "<input data-price type=\"number\" value=\"".concat(item.price, "\" class=\"form-control form-control-sm width-100\" />") : item.price, "</td>\n                <td>").concat(editMode ? "\n                    <input data-discount type=\"text\" value=\"".concat((_item$discount$value = (_item$discount = item.discount) === null || _item$discount === void 0 ? void 0 : _item$discount.value) !== null && _item$discount$value !== void 0 ? _item$discount$value : 0, "\" class=\"form-control form-control-sm width-70\" />\n                    <input type=\"radio\" name=\"discount-type-").concat(i, "\" value=\"fixed\" ").concat(((_item$discount2 = item.discount) === null || _item$discount2 === void 0 ? void 0 : _item$discount2.type) === 'fixed' ? 'checked' : '', "> EUR\n                    <input type=\"radio\" name=\"discount-type-").concat(i, "\" value=\"percentage\" ").concat(((_item$discount3 = item.discount) === null || _item$discount3 === void 0 ? void 0 : _item$discount3.type) === 'percentage' ? 'checked' : '', "> %\n                ") : item.discount ? formatDiscount(item.discount) : formatDiscount(item.discount), "</td>\n                <td data-item-total=\"").concat(i, "\">").concat(calcItemTotal(item).toLocaleString('lt-LT', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }), "</td>\n            </tr>\n        ");
   }).join('');
-  var itemsTotal = invoice.items.reduce(function (sum, item) {
-    return sum + calcItemTotal(item);
-  }, 0);
-  var withShippingTotal = itemsTotal + (invoice.shippingPrice || 0);
-  var vat = withShippingTotal * 0.21;
-  var grandTotal = withShippingTotal + vat;
+  var itemsTotal = 0;
+  var withShippingTotal = 0;
+  var vat = 0;
+  var grandTotal = 0;
+  var calcTotals = function calcTotals(_) {
+    itemsTotal = invoice.items.reduce(function (sum, item) {
+      return sum + calcItemTotal(item);
+    }, 0);
+    withShippingTotal = itemsTotal + (invoice.shippingPrice || 0);
+    vat = withShippingTotal * 0.21;
+    grandTotal = withShippingTotal + vat;
+  };
+  function updateTotals() {
+    var vatElement = document.querySelector('[data-vat]');
+    var grandTotalElement = document.querySelector('[data-total]');
+    vatElement.textContent = vat.toLocaleString('lt-LT', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+    grandTotalElement.textContent = grandTotal.toLocaleString('lt-LT', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+  function updateItemTotal(index) {
+    var itemTotalElement = document.querySelector("[data-item-total=\"".concat(index, "\"]"));
+    var item = invoice.items[index];
+    itemTotalElement.textContent = calcItemTotal(item).toLocaleString('lt-LT', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+  calcTotals();
   var html = "\n        <div class=\"container my-5\">\n            <div class=\"row mb-4\">\n                <div class=\"col-md-12 text-md-start mb-3\">\n                    <h2>S\u0105skaita fakt\u016Bra</h2>\n                    <p class=\"mb-0\"><strong>Nr.:</strong> ".concat(invoice.number, "</p>\n                    <p class=\"mb-0\"><strong>Data:</strong> ").concat(invoice.date, "</p>\n                    <p class=\"mb-0\"><strong>Apmok\u0117ti iki:</strong> ").concat(invoice.due_date, "</p>\n                </div>\n                <div class=\"col-md-6 text-md-start\">\n                    <h5>Pardav\u0117jas</h5>\n                    <p><strong>").concat(invoice.company.seller.name, "</strong><br>\n                        ").concat(invoice.company.seller.address, "<br>\n                        \u012Emon\u0117s kodas: ").concat(invoice.company.seller.code, "<br>\n                        PVM kodas: ").concat(invoice.company.seller.vat, "<br>\n                        Tel.: ").concat(invoice.company.seller.phone, "<br>\n                        El. pa\u0161tas: ").concat(invoice.company.seller.email, "\n                    </p>\n                </div>\n                <div class=\"col-md-6 text-md-start\">\n                    <h5>Pirk\u0117jas</h5>\n                    <p><strong>").concat(invoice.company.buyer.name, "</strong><br>\n                        ").concat(invoice.company.buyer.address, "<br>\n                        \u012Emon\u0117s kodas: ").concat(invoice.company.buyer.code, "<br>\n                        PVM kodas: ").concat(invoice.company.buyer.vat, "<br>\n                        Tel.: ").concat(invoice.company.buyer.phone, "<br>\n                        El. pa\u0161tas: ").concat(invoice.company.buyer.email, "\n                    </p>\n                </div>\n            </div>\n            <div class=\"table-responsive mb-4\">\n                <table class=\"table table-bordered align-middle\">\n                    <thead class=\"table-light\">\n                        <tr>\n                            <th>#</th>\n                            <th>Prek\u0117s apra\u0161ymas</th>\n                            <th>Kiekis</th>\n                            <th>Kaina (\u20AC)</th>\n                            <th>Nuolaida</th>\n                            <th>Suma (\u20AC)</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        ").concat(itemsHtml, "\n                    </tbody>\n                    <tfoot>\n                        <tr>\n                            <td colspan=\"5\" class=\"text-end\">Pristatymas</td>\n                            <td>").concat((invoice.shippingPrice || 0).toLocaleString('lt-LT', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
-  }), "</td>\n                        </tr>\n                        <tr>\n                            <td colspan=\"5\" class=\"text-end\">PVM (21%)</td>\n                            <td>").concat(vat.toLocaleString('lt-LT', {
+  }), "</td>\n                        </tr>\n                        <tr>\n                            <td colspan=\"5\" class=\"text-end\">PVM (21%)</td>\n                            <td data-vat>").concat(vat.toLocaleString('lt-LT', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
-  }), "</td>\n                        </tr>\n                        <tr>\n                            <td colspan=\"5\" class=\"text-end fw-bold\">I\u0161 viso</td>\n                            <td class=\"fw-bold\">").concat(grandTotal.toLocaleString('lt-LT', {
+  }), "</td>\n                        </tr>\n                        <tr>\n                            <td colspan=\"5\" class=\"text-end fw-bold\">I\u0161 viso</td>\n                            <td data-total class=\"fw-bold\">").concat(grandTotal.toLocaleString('lt-LT', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }), "</td>\n                        </tr>\n                    </tfoot>\n                </table>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-md-6\">\n                    <p><strong>Pastabos:</strong> Pra\u0161ome apmok\u0117ti iki nurodytos datos.</p>\n                </div>\n            </div>\n        </div>\n    ");
   var invoiceSection = document.querySelector('[data-invoice]');
   invoiceSection.innerHTML = html;
+  if (editMode) {
+    var allQuantities = invoiceSection.querySelectorAll('[data-quantity]');
+    allQuantities.forEach(function (input, i) {
+      input.addEventListener('change', function (_) {
+        var newQuantity = parseFloat(input.value);
+        if (isNaN(newQuantity) || newQuantity < 0) {
+          input.value = invoice.items[i].quantity; // Reset to original if invalid
+          return;
+        }
+        invoice.items[i].quantity = newQuantity;
+        updateItemTotal(i);
+        calcTotals();
+        updateTotals();
+      });
+    });
+    var allPrices = invoiceSection.querySelectorAll('[data-price]');
+    allPrices.forEach(function (input, i) {
+      input.addEventListener('change', function (_) {
+        var newPrice = parseFloat(input.value);
+        if (isNaN(newPrice) || newPrice < 0) {
+          input.value = invoice.items[i].price; // Reset to original if invalid
+          return;
+        }
+        invoice.items[i].price = newPrice;
+        updateItemTotal(i);
+        calcTotals();
+        updateTotals();
+      });
+    });
+    var allDiscounts = invoiceSection.querySelectorAll('[data-discount]');
+    allDiscounts.forEach(function (input, i) {
+      input.addEventListener('change', function (_) {
+        var newDiscountValue = parseFloat(input.value);
+        if (isNaN(newDiscountValue) || newDiscountValue < 0) {
+          var _invoice$items$i$disc;
+          input.value = ((_invoice$items$i$disc = invoice.items[i].discount) === null || _invoice$items$i$disc === void 0 ? void 0 : _invoice$items$i$disc.value) || 0; // Reset to original if invalid
+          return;
+        }
+        var discountType = document.querySelector("input[name=\"discount-type-".concat(i, "\"]:checked"));
+        invoice.items[i].discount = {
+          value: newDiscountValue,
+          type: discountType ? discountType.value : 'fixed'
+        };
+        updateItemTotal(i);
+        calcTotals();
+        updateTotals();
+      });
+    });
+    var allDiscountTypes = invoiceSection.querySelectorAll('input[type="radio"]');
+    allDiscountTypes.forEach(function (radio, i) {
+      radio.addEventListener('change', function (_) {
+        var discountValue = parseFloat(allDiscounts[i].value);
+        if (isNaN(discountValue) || discountValue < 0) {
+          var _invoice$items$i$disc2;
+          allDiscounts[i].value = ((_invoice$items$i$disc2 = invoice.items[i].discount) === null || _invoice$items$i$disc2 === void 0 ? void 0 : _invoice$items$i$disc2.value) || 0; // Reset to original if invalid
+          return;
+        }
+        invoice.items[i].discount = {
+          value: discountValue,
+          type: radio.value
+        };
+        updateItemTotal(i);
+        calcTotals();
+        updateTotals();
+      });
+    });
+  }
 }
 function createInvoice(data) {
   var invoiceId = (0,uuid__WEBPACK_IMPORTED_MODULE_1__["default"])();
@@ -7346,11 +7442,12 @@ function invoicesList() {
     }, 0) + (invoice.shippingPrice || 0) : 0).toLocaleString('lt-LT', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
-    }), "</td>\n                <td>\n                    <a href=\"http://127.0.0.1:5500/inv/view.html#").concat(invoice.id, "\" class=\"btn btn-primary btn-sm\">Per\u017Ei\u016Br\u0117ti</a>\n                </td>\n            </tr>\n        ");
+    }), "</td>\n                <td>\n                    <a href=\"http://127.0.0.1:5500/inv/view.html#").concat(invoice.id, "\" class=\"btn btn-primary btn-sm\">Per\u017Ei\u016Br\u0117ti</a>\n                    <a href=\"http://127.0.0.1:5500/inv/edit.html#").concat(invoice.id, "\" class=\"btn btn-secondary btn-sm\">Redaguoti</a>\n                </td>\n            </tr>\n        ");
   }).join(''), "\n    ");
   invoiceListSection.innerHTML = html;
 }
 function viewInvoice() {
+  var editMode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
   var invoiceId = window.location.hash.slice(1);
   var storedInvoices = JSON.parse(localStorage.getItem(localStorageKey)) || [];
   var invoice = storedInvoices.find(function (inv) {
@@ -7361,7 +7458,7 @@ function viewInvoice() {
     invoiceSection.innerHTML = "<div class=\"alert alert-danger\">S\u0105skaita fakt\u016Bra nerasta.</div>";
     return;
   }
-  renderInvoice(invoice);
+  renderInvoice(invoice, editMode);
 }
 if (document.body.dataset.hasOwnProperty('new')) {
   newInvoice();
@@ -7371,6 +7468,12 @@ if (document.body.dataset.hasOwnProperty('list')) {
 }
 if (document.body.dataset.hasOwnProperty('view')) {
   viewInvoice();
+}
+if (document.body.dataset.hasOwnProperty('view')) {
+  viewInvoice();
+}
+if (document.body.dataset.hasOwnProperty('edit')) {
+  viewInvoice(true);
 }
 var createButtonSection = document.querySelector('[data-create-button]');
 if (createButtonSection) {
