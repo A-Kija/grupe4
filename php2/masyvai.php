@@ -42,6 +42,23 @@ function manoSortas($a, $b) {
     return $a <=> $b;
 }
 
-usort($mas3, 'manoSortas');
+uasort($mas3, 'manoSortas');
 
 print_r($mas3);
+
+
+
+
+$mas5 = [1, 2, 3];
+
+$mas6 = $mas5; // pagal reiksme
+$mas7 = &$mas5; // pagal nuoroda taip pat kaip JS
+
+$mas5[] = 888;
+$mas7[] = 777;
+
+echo '<br><hr><br>';
+
+print_r($mas5);
+print_r($mas6);
+print_r($mas7);
