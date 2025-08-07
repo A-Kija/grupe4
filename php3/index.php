@@ -73,3 +73,68 @@ for ($i = 0; $i < 51; $i++) {
 print_r($raidMas);
 
 // rasti kokių raidžių yra daugiausia
+
+$raidesKiekis = [];
+
+foreach ($raidMas as $raid) {
+    if (isset($raidesKiekis[$raid])) {
+        $raidesKiekis[$raid]++;
+    }
+    else {
+        $raidesKiekis[$raid] = 1;
+    }
+}
+
+function paprastai($a, $b) {
+    return $b <=> $a;
+}
+
+uasort($raidesKiekis, 'paprastai');
+
+print_r($raidesKiekis);
+
+echo '<h2>daugiausiai yra: '. array_key_first($raidesKiekis) . '</h2>';
+
+
+$zve = 'Barsukas';
+
+switch($zve) {
+    case 'Bebras':
+        echo '<h3>Piktas Bebras</h3>';
+        break;
+    case 'Barsukas':
+        echo '<h3>Greitas Barsukas</h3>';
+        break;
+    case 'Briedis':
+        echo '<h3>Miško Briedis</h3>';
+        break;
+    default: 
+        echo '<h3>Neaišku kas</h3>';
+}
+
+$kas = match ($zve) {
+    'Bebras' => '<h3>Piktas Bebras</h3>',
+    'Barsukas' => '<h3>Greitas Barsukas</h3>',
+    'Briedis' => '<h3>Miško Briedis</h3>',
+    default => '<h3>Neaišku kas</h3>'
+};
+
+echo $kas;
+
+$skaicius = 70;
+
+// $koks = match (true) {
+//     $skaicius <= 10 => '<h3>Mažiau nei 10 arba lygu</h3>',
+//     $skaicius > 100 => '<h3>Daugiau nei 100</h3>',
+//     default => '<h3>Daugiau nei 10</h3>'
+// };
+
+// echo $koks;
+
+
+$fun = match (true) {
+    $skaicius < 10 => function(){return '<h3>Mažiau nei 10</h3>';},
+    default => function(){return '<h3>Daugiau nei 10</h3>';}
+};
+
+echo $fun();
