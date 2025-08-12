@@ -18,6 +18,7 @@ const sk1 = parseInt(req.query.skaicius1 || 0);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="send.js" defer></script>
     <title>WEB Mechanika</title>
 </head>
 <body>
@@ -39,6 +40,12 @@ const sk1 = parseInt(req.query.skaicius1 || 0);
     <form action="info.php?plusAnimalData=<?php echo rand(10, 99) ?>" method="post">
         <input type="text" name="animal" placeholder="animal">
         <button type="submit">Send</button>
+    </form>
+
+    <h2>BODY JSON</h2>
+    <form data-form>
+        <input type="text" name="animal" placeholder="animal">
+        <button type="button">Send</button>
     </form>
 
 </body>
