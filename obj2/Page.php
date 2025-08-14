@@ -2,21 +2,23 @@
 
 class Page {
 
+    // static public $score = '225';
+    public $title = 'Delfis 6';
+
     protected $url;
-    public $siteName = 'Delfis 6';
-    public $score = '25';
+    
 
     public function __construct()
     {
         $this->url = 'http://localhost/grupe4/obj2/page/' . rand(1000, 9999);
         // $this->render();
 
-        $this->score = '100';
+        // $this->score = '100';
     }
 
     public function render()
     {
-        echo '<h2>PAGE rendering...</h2>';
+        echo '<h2>Page rendering...'. static::$score . ' ' . $this->title . '</h2>';
     }
 
 }

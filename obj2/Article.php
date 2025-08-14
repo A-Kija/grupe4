@@ -2,8 +2,8 @@
 
 class Article extends Page {
 
+    static public $score = '5';
     public $title;
-    public $score = '5';
 
     public function __construct($title = 'Nėra pavadinimo')
     {
@@ -16,9 +16,9 @@ class Article extends Page {
 
     }
 
-    public function render()
-    {
-        echo '<h2>Article rendering...'. $this->url.'</h2>';
-    }
+    // public function render()
+    // {
+    //     echo '<h2>Article rendering...'. self::$score .'</h2>';
+    // }
 
 }
