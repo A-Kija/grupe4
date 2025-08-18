@@ -1,4 +1,6 @@
 <?php
+namespace mano\vardas\toks;
+
 abstract class Atvaizdavimas implements Planas, Planas2
 {
     const ATV = 'Tipo atvaizdavimas';

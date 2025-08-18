@@ -1,4 +1,5 @@
 <?php
+namespace mano\vardas\toks;
 
 interface Planas2 {
 

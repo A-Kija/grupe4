@@ -1,0 +1,16 @@
+{
+    "name": "arvyd/php6",
+    "description": "Geras laikas",
+    "autoload": {
+        "psr-4": {
+            "Arvyd\\Php6\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "A-Kija",
+            "email": "arvydas.kijakauskas@gmail.com"
+        }
+    ],
+    "require": {}
+}

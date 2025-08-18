@@ -1,6 +1,7 @@
 <?php
+namespace Driftas;
 
-class SuKonstanta {
+class Atvaizdavimas {
 
     private const NAMES = [
         'Driftink Pats',
