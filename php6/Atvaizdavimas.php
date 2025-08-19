@@ -19,5 +19,5 @@ abstract class Atvaizdavimas implements Planas, Planas2
 
     public abstract function sudetiDuSkaicius($a, $b);
 
-    public abstract function atimti($a, $b);
+    public abstract function atimti(int $a, int $b) : int;
 }

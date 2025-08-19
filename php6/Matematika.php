@@ -7,7 +7,7 @@ class Matematika extends Atvaizdavimas implements Planas, Planas2
         return $a + $b;
     }
 
-    public function atimti($a, $b)
+    public function atimti(int $a, int $b) : int
     {
         return $a - $b;
     }
