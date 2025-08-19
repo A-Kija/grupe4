@@ -4,4 +4,4 @@ use Bebro\Blogas\App;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-App::run();
+echo App::run(); // vienintelis echo visoje aplikacijoje
