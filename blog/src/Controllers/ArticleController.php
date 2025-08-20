@@ -7,6 +7,15 @@ use Bebro\Blogas\Models\Article;
 class ArticleController
 {
 
+    public function index(): string
+    {
+        $articles = (new Article())->index();
+        return App::view('articles/index', ['articles' => $articles, 'title' => 'Articles List']);
+    }
+    
+    
+    
+    
     public function show(int $id) : string
     {
         

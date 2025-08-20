@@ -13,7 +13,7 @@ class Article extends Model
     }
     
     
-    public function getAllArticles(): array
+    public function index(): array
     {
         $sql = '
             SELECT * 

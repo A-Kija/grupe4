@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?= $url ?>style.css">
     <title><?= $title ?? 'Bebro Blogas' ?></title>
 </head>
 <body>
+    <?php
+    if (($title ?? '') != '404 Not Found') {
+        include __DIR__ . '/menu.php';
+    }
+    ?>

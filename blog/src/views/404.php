@@ -50,5 +50,5 @@
     <h1>404</h1>
     <h2>Page Not Found</h2>
     <p>Atsiprašome, puslapis, kurio ieškote, neegzistuoja arba buvo perkeltas.</p>
-    <a href="/">Eiti namo</a>
+    <a href="<?= $url ?>">Eiti namo</a>
 </div>
