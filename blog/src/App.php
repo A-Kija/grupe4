@@ -13,6 +13,7 @@ class App
     
     public static function run()
     {
+        session_start();
         return self::route();
     }
 
@@ -47,6 +48,8 @@ class App
     {
         extract($data); // sukuriame kintamuosius iš masyvo data['text'] ==> $text
         $url = self::URL;
+        $flash = $_SESSION['flash'] ?? [];
+        unset($_SESSION['flash']);
 
         ob_start();
         include __DIR__ . '/views/top.php';
@@ -55,8 +58,12 @@ class App
         return ob_get_clean();
     }
 
+    public static function redirect(string $url, array $data = []): string
+    {
+        $_SESSION['flash'] = $data;
 
-
-
+        header('Location: ' . self::URL . $url);
+        return '';
+    }
 
 }
