@@ -9,10 +9,10 @@ class RegisterController
 {
     public function show()
     {
-        return App::view('register');
+        return App::view('register', ['title' => 'Register']);
     }
 
-    public function register()
+    public function register() // tai yra store metodas user
     {
         $user = new User();
         $user->username = $_POST['username'];

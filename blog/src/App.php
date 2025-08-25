@@ -6,6 +6,7 @@ use Bebro\Blogas\Controllers\AboutController;
 use Bebro\Blogas\Controllers\ArticleController;
 use Bebro\Blogas\Controllers\RegisterController;
 use Bebro\Blogas\Controllers\BoxController;
+use Bebro\Blogas\Controllers\LoginController;
 
 class App
 {
@@ -47,6 +48,9 @@ class App
             $method == 'GET' && count($params) === 1 && $params[0] === 'register' => (new RegisterController())->show(),
             $method == 'POST' && count($params) === 1 && $params[0] === 'register' => (new RegisterController())->register(),
 
+            $method == 'GET' && count($params) === 1 && $params[0] === 'login' => (new LoginController())->show(),
+            $method == 'POST' && count($params) === 1 && $params[0] === 'login' => (new LoginController())->login(),
+
             count($params) === 1 && $params[0] === '' => (new ArticleController())->index(),
             count($params) === 1 && $params[0] === 'about' => (new AboutController())->index(),
             count($params) === 2 && $params[0] === 'article' => (new ArticleController())->show((int)$params[1]),
@@ -58,7 +62,7 @@ class App
     {
         extract($data); // sukuriame kintamuosius iš masyvo data['text'] ==> $text
         $url = self::URL;
-        $flash = $_SESSION['flash'] ?? [];
+        $flash = $_SESSION['flash'] ?? []; // nuskaitome iš sesijos
         unset($_SESSION['flash']);
 
         ob_start();
@@ -70,7 +74,7 @@ class App
 
     public static function redirect(string $url, array $data = []): string
     {
-        $_SESSION['flash'] = $data;
+        $_SESSION['flash'] = $data; // irasome i sesijos kintamąjį
 
         header('Location: ' . self::URL . $url);
         return '';
