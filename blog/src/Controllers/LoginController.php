@@ -34,6 +34,17 @@ class LoginController
             ]
         ]);
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        return App::redirect('', ['message' =>
+            [
+                'text' => 'Logout successful!',
+                'type' => 'success'
+            ]
+        ]);
+    }
 }
 
 

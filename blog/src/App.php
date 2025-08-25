@@ -7,6 +7,8 @@ use Bebro\Blogas\Controllers\ArticleController;
 use Bebro\Blogas\Controllers\RegisterController;
 use Bebro\Blogas\Controllers\BoxController;
 use Bebro\Blogas\Controllers\LoginController;
+use Bebro\Blogas\Controllers\ColorController;
+use Bebro\Blogas\Services\Auth;
 
 class App
 {
@@ -34,7 +36,21 @@ class App
 
         $method = $_SERVER['REQUEST_METHOD'];
 
+        if ($params[0] === 'box' && !Auth::check()) {
+            return App::redirect('login', ['message' =>
+                [
+                    'text' => 'You must be logged in to access this page.',
+                    'type' => 'error'
+                ]
+            ]);
+        }
+
         return match(true) {
+
+
+            $method == 'GET' && count($params) === 1 && $params[0] === 'color' => (new ColorController())->index(),
+            $method == 'POST' && count($params) === 1 && $params[0] === 'color' => (new ColorController())->getName(),
+
 
             //box CRUD
 
@@ -50,6 +66,7 @@ class App
 
             $method == 'GET' && count($params) === 1 && $params[0] === 'login' => (new LoginController())->show(),
             $method == 'POST' && count($params) === 1 && $params[0] === 'login' => (new LoginController())->login(),
+            $method == 'POST' && count($params) === 1 && $params[0] === 'logout' => (new LoginController())->logout(),
 
             count($params) === 1 && $params[0] === '' => (new ArticleController())->index(),
             count($params) === 1 && $params[0] === 'about' => (new AboutController())->index(),

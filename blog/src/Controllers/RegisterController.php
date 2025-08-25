@@ -19,7 +19,7 @@ class RegisterController
         $user->password = md5($_POST['password']);
         $user->store();
 
-        return App::redirect('register', ['message' =>
+        return App::redirect('login', ['message' =>
             [
                 'text' => 'Registration successful!',
                 'type' => 'success'
