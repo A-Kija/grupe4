@@ -51,12 +51,23 @@ class Article extends Model
     {
         $sql = '
             INSERT INTO articles
-            (title, content, author)
-            VALUES (?, ?, ?)
+            (title, content, author, image)
+            VALUES (?, ?, ?, ?)
         ';
         
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$this->title, $this->content, $this->author]);
+        $stmt->execute([$this->title, $this->content, $this->author, $this->image]);
+    }
+
+    public function delete($id)
+    {
+        $sql = '
+            DELETE FROM articles
+            WHERE id = ?
+        ';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id]);
     }
     
 }

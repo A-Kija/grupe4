@@ -46,7 +46,6 @@ class ArticleController
             $article->image = $this->uploadImage($article->image);
         }
 
-        // return print_r($article->image, 1);
         $article->store();
 
         return App::redirect('', ['message' =>
@@ -57,13 +56,50 @@ class ArticleController
         ]);
     }
 
+    public function delete($id)
+    {
+        $article = Article::find($id);
+        if (!$article) {
+            return App::view('404', ['title' => 'Article Not Found']);
+        }
+
+        if ($article->image) {
+            $this->deleteImage($article->image);
+        }
+
+        $article->delete($id);
+
+        return App::redirect('article', ['message' =>
+            [
+                'text' => 'Article deleted successfully!',
+                'type' => 'success'
+            ]
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $article = Article::find($id);
+        if (!$article) {
+            return App::view('404', ['title' => 'Article Not Found']);
+        }
+        return App::view('articles/edit', ['article' => $article]);
+    }
+
+    private function deleteImage(string $image): void
+    {
+        $imagePath = __DIR__ . '/../../public/' . $image;
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+    }
+
     private function uploadImage(array $image): string
     {
         $targetDir = __DIR__ . '/../../public/images/';
 
-        $fileName = basename($image['name']);
+        $fileName = rand(1000000, 9999999) . basename($image['name']);
         $targetFilePath = $targetDir . $fileName;
-
 
         // Move to folder
         if (move_uploaded_file($image['tmp_name'], $targetFilePath)) {

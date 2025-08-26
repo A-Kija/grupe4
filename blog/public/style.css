@@ -133,7 +133,7 @@ form {
     background: #fff;
     padding: 28px 32px;
     border-radius: 10px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -208,4 +208,58 @@ form button[type="submit"]:hover {
 .alert-info {
     background: #d1ecf1;
     color: #0c5460;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 12px 0;
+}
+
+img.small {
+    max-width: 150px;
+    display: block;
+    margin: 12px 0;
+}
+
+.buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.buttons form {
+    display: inline;
+    max-width: unset;
+    margin: 0;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+}
+.buttons a,
+.buttons form button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 1.08em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    height: 50px;
+}
+
+.buttons form a:hover,
+.buttons form button:hover {
+    background: #0056b3;
 }
