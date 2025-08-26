@@ -5,6 +5,12 @@ body {
     padding: 40px;
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 .article-container {
     background: #fff;
     max-width: 700px;
@@ -122,7 +128,7 @@ ul.menu li {
 
 
 form {
-    max-width: 400px;
+    max-width: 500px;
     margin: 32px auto;
     background: #fff;
     padding: 28px 32px;
@@ -140,7 +146,9 @@ form label {
     display: block;
 }
 
+form textarea,
 form input[type="text"],
+form input[type="file"],
 form input[type="email"],
 form input[type="password"] {
     width: 100%;
@@ -151,6 +159,10 @@ form input[type="password"] {
     background: #fafbfc;
     transition: border 0.2s;
     margin-top: 4px;
+}
+
+form textarea {
+    height: 200px;
 }
 
 form input:focus {

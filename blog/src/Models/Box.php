@@ -35,7 +35,7 @@ class Box extends Model
         $box->id = $data['id'];
         $box->count = $data['count'];
 
-        return $box;
+        return $box; 
     }
 
     public function __construct()
