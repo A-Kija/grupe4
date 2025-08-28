@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ColorController as C;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +18,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/vardas', function () {
+    return view('name');
+});
+
+Route::get('/vardas2', [C::class, 'showName']);
+
+
+Route::get('/spalva/{color}', [C::class, 'showColor']);
+
+Route::get('/suma/{a}/{b}', [C::class, 'sum']);
 
 Auth::routes();
 
