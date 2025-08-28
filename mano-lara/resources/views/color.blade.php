@@ -1,9 +1,11 @@
 @extends('body')
 
 @section('turinys')
-<div style="background-color: {{ $color }}; height: 100px; display: flex; align-items: center; justify-content: center; color: white;">
+<div style="background-color: {{ $color }};" class="color-box" data-color="{{ $color }}">
     <h1>{{ $color }}</h1>
 </div>
+<a href="{{ route('atsitiktine-spalva') }}">Gauti atsitiktinę spalvą</a>
+
 @endsection
 
 @section('spalva')

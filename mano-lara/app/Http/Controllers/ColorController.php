@@ -28,4 +28,12 @@ class ColorController extends Controller
     {
         return $a + $b;
     }
+
+    public function randomColor()
+    {
+        $colors = ['red', 'green', 'blue', 'yellow', 'purple', 'orange'];
+        $randomColor = $colors[array_rand($colors)];
+
+        return view('color', ['color' => $randomColor]);
+    }
 }

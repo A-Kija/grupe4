@@ -30,6 +30,8 @@ Route::get('/spalva/{color}', [C::class, 'showColor']);
 
 Route::get('/suma/{a}/{b}', [C::class, 'sum']);
 
+Route::get('/spalva', [C::class, 'randomColor'])->name('atsitiktine-spalva');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
