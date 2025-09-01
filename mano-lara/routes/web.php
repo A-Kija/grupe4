@@ -38,7 +38,7 @@ Route::get('/spalva', [C::class, 'randomColor'])->name('atsitiktine-spalva');
 Route::get('/books', [BookController::class, 'index'])->name('books-index');
 Route::get('/books/create', [BookController::class, 'create'])->name('books-create');
 Route::get('/books/edit/{book}', [BookController::class, 'edit'])->name('books-edit');
-Route::get('/books/delete/{book}', [BookController::class, 'destroy'])->name('books-delete');
+Route::get('/books/delete/{book}', [BookController::class, 'delete'])->name('books-delete');
 Route::get('/books/show/{book}', [BookController::class, 'show'])->name('books-show');
 
 Route::post('/books', [BookController::class, 'store'])->name('books-store');

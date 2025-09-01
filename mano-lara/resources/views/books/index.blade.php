@@ -13,7 +13,7 @@
                                 <th>Title</th>
                                 <th>Author</th>
                                 <th>Pages</th>
-                                <th>Description</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -22,7 +22,10 @@
                                     <td>{{ $book->title }}</td>
                                     <td>{{ $book->author }}</td>
                                     <td>{{ $book->pages }}</td>
-                                    <td>{{ $book->description }}</td>
+                                    <td>
+                                        <a href="{{ route('books-edit', $book->id) }}" class="btn btn-warning me-2">Edit</a>
+                                        <a href="{{ route('books-delete', $book->id) }}" class="btn btn-danger">Delete</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

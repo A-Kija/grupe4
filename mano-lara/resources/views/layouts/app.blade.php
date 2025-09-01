@@ -35,6 +35,9 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('books-index') }}">Books List</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('books-create') }}">New Book</a>
                         </li>
                     </ul>
