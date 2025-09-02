@@ -1,8 +1,10 @@
 <div class="card">
     <div class="card-header">
-        <h1>Authors list</h1>
+        <h2>Authors list</h2>
     </div>
     <div class="card-body">
+        <button class="btn btn-primary mt-2 mb-2" data-action="create"
+            data-action-url="{{ route('authors-create') }}">Add Author</button>
         <table class="table">
             <thead>
                 <tr>

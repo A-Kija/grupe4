@@ -48,6 +48,7 @@ Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books-
 
 // Authors Crud
 Route::get('/authors', [AuthorController::class, 'index'])->name('authors-index');
+Route::get('/authors/list', [AuthorController::class, 'list'])->name('authors-list');
 Route::get('/authors/create', [AuthorController::class, 'create'])->name('authors-create');
 Route::get('/authors/edit/{author}', [AuthorController::class, 'edit'])->name('authors-edit');
 Route::get('/authors/delete/{author}', [AuthorController::class, 'delete'])->name('authors-delete');

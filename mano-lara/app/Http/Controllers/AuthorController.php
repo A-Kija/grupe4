@@ -9,8 +9,42 @@ class AuthorController extends Controller
 {
     public function index()
     {
-        $authors = Author::all();
-        return view('authors.index', ['authors' => $authors]);
+        return view('authors.index');
+    }
+
+    public function list()
+    {
+        // sleep(2);
+
+        $authors = Author::orderBy('id', 'desc')->get();
+
+        $list = view('authors.list')->with('authors', $authors)->render();
+        
+        return response()->json([
+            'html' => $list,
+            'success' => true
+        ]);
+    }
+
+    public function create()
+    {
+        // sleep(2);
+
+        $form = view('authors.create')->render();
+
+        return response()->json([
+            'html' => $form,
+            'success' => true
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $author = Author::create($request->all());
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 
 }
