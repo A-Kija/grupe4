@@ -19,10 +19,36 @@ class BookController extends Controller
         // dd(Book::orderBy('id', 'desc')->get()->map(fn($b) => $b->pages)->filter(fn($p) => $p > 200)->count());
 
         $sort = $request->input('sort');
+        $show_all = $request->input('show_all') ?? 0;
+        $min_pages = $request->input('min_pages') ?? 100;
 
-        $books = Book::orderBy('id', 'desc')->get();
+        $sql = Book::query();
 
-        return view('books.index', ['books' => $books]);
+        $sql = match($sort) {
+            'author' => $sql->orderBy('author'),
+            'title' => $sql->orderBy('title'),
+            'pages' => $sql->orderBy('pages'),
+            default => $sql,
+        };
+
+        if ($min_pages) {
+            // $sql = $sql->where('pages', '>=', $min_pages);
+            $sql = $sql->whereRaw('pages >= ?', [$min_pages]);
+        }
+
+        if ($show_all) {
+            $books = $sql->get();
+        } else {
+            $books = $sql->paginate(7)->withQueryString();
+        }
+        
+
+        return view('books.index', [
+            'books' => $books,
+            'sort' => $sort,
+            'show_all' => $show_all,
+            'min_pages' => $min_pages,
+        ]);
     }
 
     public function create()
