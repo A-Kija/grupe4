@@ -5,7 +5,21 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><h1>Books list</h1></div>
+                <div class="card-header d-flex align-items-center">
+                    <h1 class="mb-0">Books list</h1>
+                    <form action="{{ route('books-index') }}" class="ms-auto d-flex align-items-center">
+                        <div class="input-group">
+                            <label class="input-group-text" for="sort">Sort by</label>
+                            <select name="sort" class="form-select">
+                                <option value="">Select</option>
+                                <option value="title">Title</option>
+                                <option value="author">Author</option>
+                                <option value="pages">Pages</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-secondary ms-2" type="submit">Sort</button>
+                    </form>
+                </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
@@ -32,6 +46,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{-- {{ $books->links() }} --}}
                 </div>
             </div>
         </div>

@@ -12,9 +12,16 @@ class BookController extends Controller
     //     $this->middleware('auth');
     // }
 
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::all();
+        // $books = Book::orderBy('id', 'desc')->paginate(7);
+        
+        // dd(Book::orderBy('id', 'desc')->get()->map(fn($b) => $b->pages)->filter(fn($p) => $p > 200)->count());
+
+        $sort = $request->input('sort');
+
+        $books = Book::orderBy('id', 'desc')->get();
+
         return view('books.index', ['books' => $books]);
     }
 
