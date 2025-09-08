@@ -14,8 +14,12 @@
                             <input type="text" class="form-control" id="title" name="title">
                         </div>
                         <div class="mb-3">
-                            <label for="author" class="form-label">Author</label>
-                            <input type="text" class="form-control" id="author" name="author">
+                            <label for="author_id" class="form-label">Author</label>
+                            <select class="form-control" id="author_id" name="author_id">
+                                @foreach($authors as $author)
+                                    <option value="{{ $author->id }}">{{ $author->name }} {{ $author->lastname }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="pages" class="form-label">Pages</label>

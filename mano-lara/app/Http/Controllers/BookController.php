@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Author;
 
 class BookController extends Controller
 {
@@ -53,7 +54,8 @@ class BookController extends Controller
 
     public function create()
     {
-        return view('books.create');
+        $authors = Author::all();
+        return view('books.create', ['authors' => $authors]);
     }
 
     public function store(Request $request)
@@ -70,8 +72,9 @@ class BookController extends Controller
             abort(403);
         }
 
+        $authors = Author::all();
         $book = Book::find($id);
-        return view('books.edit', ['book' => $book]);
+        return view('books.edit', ['book' => $book, 'authors' => $authors]);
     }
 
     public function update(Request $request, $id)
