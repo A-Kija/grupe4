@@ -5,19 +5,29 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><h1>Create Book</h1></div>
+                <div class="card-header">
+                    <h1>Create Book</h1>
+                </div>
                 <div class="card-body">
                     <form action="{{ route('books-store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="title" name="title">
+                            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title"
+                                name="title" value="{{ old('title') }}">
+                            @error('title')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="author_id" class="form-label">Author</label>
-                            <select class="form-control" id="author_id" name="author_id">
+                            <select class="form-control" id="author_id"
+                                name="author_id">
                                 @foreach($authors as $author)
-                                    <option value="{{ $author->id }}">{{ $author->name }} {{ $author->lastname }}</option>
+                                <option @if(old('author_id')==$author->id) selected @endif value="{{ $author->id }}">{{
+                                    $author->name }} {{ $author->lastname }}</option>
                                 @endforeach
                             </select>
                         </div>

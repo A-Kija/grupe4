@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreBookRequest;
 use App\Models\Book;
 use App\Models\Author;
 
@@ -26,7 +27,9 @@ class BookController extends Controller
         $sql = Book::query();
 
         $sql = match($sort) {
-            'author' => $sql->orderBy('author'),
+            'author' => $sql->join('authors', 'books.author_id', '=', 'authors.id')
+                            ->orderBy('authors.name')
+                            ->select('books.*'),
             'title' => $sql->orderBy('title'),
             'pages' => $sql->orderBy('pages'),
             default => $sql,
@@ -54,13 +57,13 @@ class BookController extends Controller
 
     public function create()
     {
-        $authors = Author::all();
+        $authors = Author::orderBy('name')->get();
         return view('books.create', ['authors' => $authors]);
     }
 
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
-        Book::create($request->all());
+        Book::create($request->validated());
         return redirect()->route('books-index');
     }
 
