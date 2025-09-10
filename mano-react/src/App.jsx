@@ -1,51 +1,53 @@
-import './App.css';
-import randomColor from './Functions/randomColor';
-import random from './Functions/random';
-import Bebras from './Components/070/Bebras';
-import Box from './Components/070/Box';
-
+import { useState } from 'react';
+import './App.scss';
+import './buttons.scss';
 
 function App() {
 
+    const mygtukas1 = _ => {
+        console.log('CLICK 1');
+    }
 
-  console.log('GO!', random(0, 1));
+    const mygtukas2 = e => {
+        console.log('CLICK 2', e.target.name);
+    }
 
-  let kas = '';
+    const kitiMygtukai = spalva => {
+        console.log('CLICK', spalva);
+    }
 
-  for (let i = 1; i < 10; i++) {
-    kas += i;
-  }
+    const mygtukas3 = (e, kas) => {
+        console.log('CLICK 2', e.target.name, kas);
+    }
 
-  const daug = _ => {
-    return <h6>DAUGYBĖ</h6>;
-  }
+    const [counter, setCounter] = useState(1);
 
-  const spalva = randomColor();
+    const plus1 = _ => {
+        setCounter(counter + 1)
+        setCounter(counter + 1)
+        setCounter(counter + 1)
+        console.log(counter);
+    }
+
+   
 
 
-  return (
-    <>
-      <Box dydis={random(50, 200)} plotis="200" dar={{
-        spalva: 'skyblue',
-        siena: '17px' 
-      }}/><Box dydis="55" plotis="300" dar={{
-        spalva: 'crimson',
-        siena: '7px' 
-      }}/>
-      <Bebras/><Bebras/><Bebras/><Bebras/>
-      <h1 style={
-        {
-          color: spalva,
-          fontFamily: 'monospace',
-          letterSpacing: '5px'
-        }
-      }>REACT - {kas}</h1>
-      <Bebras/><Bebras/>
-      <h2 style={{ color: spalva }}>Matematika 5 + 7 = {5 + 7} </h2>
-      <div>{daug()} {randomColor()}</div>
-      {random(0, 1) ? <h3>TAIP {randomColor()}</h3> : <h3>NE</h3>}
-    </>
-  );
+    return (
+        <>
+            <button className="green" onClick={mygtukas1}>GO</button>
+            <button className="red" name="raudonas" onClick={mygtukas2}>GO</button>
+
+            <button className="yellow" onClick={_ => kitiMygtukai('Geltonas')}>GO</button>
+            <button className="black" onClick={_ => kitiMygtukai('Juodas')}>GO</button>
+            <button className="blue" onClick={_ => kitiMygtukai('Mėlynas')}>GO</button>
+
+            <button className="teal" name="keista" onClick={e => mygtukas3(e, 'spalva')}>GO</button>
+
+            <hr/>
+            <h2>{counter}</h2>
+            <button className="green" onClick={plus1}>+1</button>
+        </>
+    );
 }
 
 export default App;
