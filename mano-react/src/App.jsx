@@ -1,18 +1,20 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import './App.scss';
 import './buttons.scss';
 import randomColor from './Functions/randomColor';
 import random from './Functions/random';
 import { v4 } from 'uuid';
+import Sq from './Components/072/Sq';
 
 function App() {
 
     const [sq, setSq] = useState([]);
+    const [count, setCount] = useState(0);
+    const [spinCount, setSpinCount] = useState(0);
 
     const rowCounter = useRef(1);
 
-
-    const addSq = _ => {
+    const addSq = useCallback(_ => {
         setSq(s => [...s, {
             id: v4(),
             color: randomColor(),
@@ -21,7 +23,25 @@ function App() {
             show: true,
             spin: false
         }]);
-    }
+    }, []);
+
+    useEffect(_ => {
+        setCount(sq.reduce((count, el) => el.show ? count + 1 : count, 0));
+    }, [sq]);
+
+    useEffect(_ => {
+        setSpinCount(sq.reduce((count, el) => el.show && el.spin ? count + 1 : count, 0));
+    }, [sq]);
+
+    useEffect(_ => {
+        console.log('start');
+        addSq();
+        addSq();
+        addSq();
+    }, [addSq]);
+
+
+
 
     const remSq = _ => {
         setSq(s => {
@@ -59,19 +79,12 @@ function App() {
 
     return (
         <>
+            <h1>SQ: {count}</h1><h2>SPIN: {spinCount}</h2>
             <div className="sq-bin">
                 {
                     sq.map(el => el.show
                         ?
-                        <div
-                            className={'sq' + (el.spin ? ' spin' : '')}
-                            key={el.id}
-                            style={{
-                                borderColor: el.color,
-                                background: el.color + '80'
-                            }}
-                            onClick={_ => spinIt(el.id)}
-                        >{el.mark}</div>
+                        <Sq key={el.id} el={el} spinIt={spinIt}/>
                         :
                         null)
                 }
