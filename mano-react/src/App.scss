@@ -44,7 +44,7 @@
 .sq-bin {
   width: 80%;
   display: flex;
-  gap: 30px;
+  gap: 20px;
   flex-wrap: wrap;
   margin: 30px;
 
@@ -64,9 +64,22 @@
     user-select: none;
     transition: 0.3s;
 
+    &.spin {
+      animation: sq-spin infinite 5s linear;
+    }
+
     &:hover {
       transform: scale(1.1);
       box-shadow: 0 0 20px black;
     }
+  }
+}
+
+@keyframes sq-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
