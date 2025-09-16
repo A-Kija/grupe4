@@ -14,4 +14,12 @@ class BookController extends Controller
         return Book::all();
 
     }
+
+    public function store(Request $request) {
+
+        sleep(3); // Simulate delay
+
+        $book = Book::create($request->all());
+        return response()->json(['id' => $book->id], 201);
+    }
 }
