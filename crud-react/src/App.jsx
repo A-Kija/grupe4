@@ -35,6 +35,25 @@ export default function App() {
 
     }, [storeBook]);
 
+    useEffect(_ => {
+        if (null === destroyBook) {
+            return;
+        }
+
+        setBooks(bs => bs.map(b => destroyBook.id === b.id ? { ...b, delete: true } : b));
+
+        axios.delete(URL + 'book/' + destroyBook.id)
+            .then(res => {
+                console.log(res);
+                setBooks(bs => bs.filter(b => b.id !== destroyBook.id));
+            })
+            .catch(error => {
+                console.log(error);
+                setBooks(bs => bs.map(b => destroyBook.id === b.id ? { ...b, delete: false } : b));
+            });
+
+    }, [destroyBook]);
+
 
     useEffect(_ => {
         axios.get(URL + 'books')
@@ -55,11 +74,11 @@ export default function App() {
                         <Create setStoreBook={setStoreBook} />
                     </div>
                     <div className="col-8">
-                        <List books={books} />
+                        <List books={books} setDeleteBook={setDeleteBook} />
                     </div>
                 </div>
             </div>
-            <Delete />
+            <Delete deleteBook={deleteBook} setDeleteBook={setDeleteBook} setDestroyBook={setDestroyBook} />
         </>
     );
 }

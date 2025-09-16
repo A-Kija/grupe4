@@ -22,4 +22,14 @@ class BookController extends Controller
         $book = Book::create($request->all());
         return response()->json(['id' => $book->id], 201);
     }
+
+    public function destroy($id) {
+
+        sleep(3); // Simulate delay
+
+        // abort(422, 'Simulated error');
+
+        Book::findOrFail($id)->delete();
+        return response()->json(null, 204);
+    }
 }
