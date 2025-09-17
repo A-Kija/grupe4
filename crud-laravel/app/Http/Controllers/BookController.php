@@ -32,4 +32,15 @@ class BookController extends Controller
         Book::findOrFail($id)->delete();
         return response()->json(null, 204);
     }
+
+    public function update(Request $request, $id) {
+
+        sleep(3); // Simulate delay
+
+        abort(422, 'Simulated error');
+
+        $book = Book::findOrFail($id);
+        $book->update($request->all());
+        return response()->json(null, 204);
+    }
 }
