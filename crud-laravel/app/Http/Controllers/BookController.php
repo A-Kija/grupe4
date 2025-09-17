@@ -19,6 +19,8 @@ class BookController extends Controller
 
         sleep(3); // Simulate delay
 
+        abort(422, 'Simulated error');
+
         $book = Book::create($request->all());
         return response()->json(['id' => $book->id], 201);
     }
