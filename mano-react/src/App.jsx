@@ -1,104 +1,73 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useReducer } from 'react';
 import './App.scss';
 import './buttons.scss';
-import randomColor from './Functions/randomColor';
-import random from './Functions/random';
-import { v4 } from 'uuid';
-import Sq from './Components/072/Sq';
+import countReducer from './Reducers/countReducer';
+
+
 
 function App() {
 
-    const [sq, setSq] = useState([]);
-    const [count, setCount] = useState(0);
-    const [spinCount, setSpinCount] = useState(0);
+    const [counter1, setCounter1] = useState(0);
 
-    const rowCounter = useRef(1);
+    const [counter2, dispachCounter2] = useReducer(countReducer, 0);
 
-    const addSq = useCallback(_ => {
-        setSq(s => [...s, {
-            id: v4(),
-            color: randomColor(),
-            mark: random(1000, 9999),
-            row: rowCounter.current++,
-            show: true,
-            spin: false
-        }]);
-    }, []);
-
-    useEffect(_ => {
-        setCount(sq.reduce((count, el) => el.show ? count + 1 : count, 0));
-    }, [sq]);
-
-    useEffect(_ => {
-        setSpinCount(sq.reduce((count, el) => el.show && el.spin ? count + 1 : count, 0));
-    }, [sq]);
-
-    useEffect(_ => {
-        console.log('start');
-        addSq();
-        addSq();
-        addSq();
-    }, [addSq]);
+    const [input, setInput] = useState(10);
 
 
-
-
-    const remSq = _ => {
-        setSq(s => {
-            const copy = [...s];
-            copy.pop();
-            return copy;
-        });
+    const goCounter1 = _ => {
+        setCounter1(prev => prev + 1);
     }
 
+    const goCounter2 = _ => {
 
-    const sortAsc = _ => {
-        setSq(s => s.toSorted((a, b) => a.mark - b.mark));
+        const actionObject2 = {
+            type: 'ADD_ONE'
+        }
+
+        dispachCounter2(actionObject2);
+
     }
 
-    const sortDesc = _ => {
-        setSq(s => s.toSorted((a, b) => b.mark - a.mark));
+    
+    const goCounter3 = _ => {
+
+        const actionObject2 = {
+            type: 'REM_ONE'
+        }
+
+        dispachCounter2(actionObject2);
+
     }
 
-    const sortDefault = _ => {
-        setSq(s => s.toSorted((a, b) => a.row - b.row));
+    const goCounter4 = _ => {
+
+        const actionObject2 = {
+            type: 'ADD_MANY',
+            payload: input
+        }
+
+        dispachCounter2(actionObject2);
+
     }
 
-    const more5000 = _ => {
-        setSq(s => s.map(el => el.mark > 5000 ? { ...el, show: true } : { ...el, show: false }));
-    }
-
-    const showDefault = _ => {
-        setSq(s => s.map(el => ({ ...el, show: true })));
-    }
-
-    const spinIt = id => {
-        setSq(s => s.map(el => el.id === id ? { ...el, spin: !el.spin } : el));
-    }
-
+    
 
     return (
         <>
-            <h1>SQ: {count}</h1><h2>SPIN: {spinCount}</h2>
-            <div className="sq-bin">
-                {
-                    sq.map(el => el.show
-                        ?
-                        <Sq key={el.id} el={el} spinIt={spinIt}/>
-                        :
-                        null)
-                }
-            </div>
-
-            <hr />
-            <button className="blue" onClick={addSq}>+[]</button>
-            <button className="red" onClick={remSq}>-[]</button>
-            <button className="yellow" onClick={sortAsc}>123...9</button>
-            <button className="yellow" onClick={sortDesc}>987...1</button>
-            <button className="yellow" onClick={sortDefault}>NAT...</button>
-            <button className="teal" onClick={more5000} >&gt;5000</button>
-            <button className="teal" onClick={showDefault}>&lt;[]&gt;</button>
+            <h2>Hello, Reducer</h2>
+            <button className="green" onClick={goCounter1}>{counter1}</button>
+            <button className="blue" onClick={goCounter2}>{counter2}</button>
+            <button className="red" onClick={goCounter3}>{counter2}</button>
+            <hr/>
+            <button className="yellow" onClick={goCounter4}>{counter2}</button>
+            <input type="number" value={input} onChange={e => setInput(e.target.value)} style={{
+                fontSize: '20px',
+                padding: '10px 5px',
+                width: '56px'
+            }}></input>
         </>
+
+
     );
 }
 
