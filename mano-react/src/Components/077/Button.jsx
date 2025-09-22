@@ -1,8 +1,12 @@
-export default function Button() {
+import { useContext } from 'react';
+import ColorsContext from '../../Contexts/ColorsContext';
 
+export default function Button({children}) {
+
+    const { changeColor } = useContext(ColorsContext);
 
     return (
-         <button className="yellow" onClick={_ => setColor(randColor())}>Go fancy color</button>
+        <button className="yellow" onClick={changeColor}>{children}</button>
     );
 
 }

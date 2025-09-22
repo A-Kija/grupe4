@@ -1,20 +1,19 @@
-import { createContext, useState } from 'react';
-import randColor from '../Functions/randomColor';
+import { createContext } from 'react';
+import useColor from '../Hooks/useColor';
 
 
 const ColorsContext = createContext();
 
 
-export const Colors = ({children}) => {
+export const Colors = ({ children }) => {
 
-       const [color, setColor] = useState('#3f7428');
+    const [color, changeColor] = useColor('#742858');
 
 
     return (
         <ColorsContext.Provider value={{
             color,
-            setColor,
-            randColor
+            changeColor,
         }}>
             {children}
         </ColorsContext.Provider>
