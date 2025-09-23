@@ -1,0 +1,1 @@
+export const URL = 'http://localhost/grupe4/crud-laravel/public/api/';
