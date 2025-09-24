@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as SETTINGS from '../Constants/settings';
 import * as A from '../Actions/books';
 
-export default function useCreateBook(msg) {
+export default function useCreateBook(dispatchBooks, msg) {
 
     const [storeBook, setStoreBook] = useState(null);
 
@@ -12,17 +12,17 @@ export default function useCreateBook(msg) {
             return;
         }
         const id = 'TMP' + Math.floor(Math.random() * 1000000); // laikinas ID
-        setBooks(bs => [{ ...storeBook, id }, ...bs]);
+        dispatchBooks(A.addNewBook(storeBook, id));
         const msgId = msg({
             title: 'Storing...',
             text: 'Your book is sending to server',
             type: 'info'
         });
 
-        axios.post(URL + 'book', storeBook)
+        axios.post(SETTINGS.URL + 'book', storeBook)
             .then(res => {
                 console.log(res.data);
-                setBooks(bs => bs.map(b => id === b.id ? { ...b, id: res.data.id } : b));
+                dispatchBooks(A.confirmAddingNewBook(id, res.data.id));
                 msg({
                     title: 'Stored',
                     text: 'Your book was stored',
@@ -31,7 +31,7 @@ export default function useCreateBook(msg) {
             })
             .catch(error => {
                 console.log(error);
-                setBooks(bs => bs.filter(b => b.id !== id));
+                dispatchBooks(A.cancelAddingNewBook(id));
                 msg({
                     title: 'Storing Failed',
                     text: 'Your book was rejected',

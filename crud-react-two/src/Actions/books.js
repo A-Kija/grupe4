@@ -27,10 +27,16 @@ export const restoreDeleted = id => {
     }
 }
 
-export const addNewBook = id => {
+export const addNewBook = (book, id) => {
     return {
         type: C.ADD_NEW_BOOK,
-        payload: id
+        payload: { ...book, id }
+    }
+}
+export const confirmAddingNewBook = (tmpId, id) => {
+    return {
+        type: C.CONFIRM_ADDING_NEW_BOOK,
+        payload: { tmpId, id }
     }
 }
 export const cancelAddingNewBook = id => {
@@ -39,9 +45,21 @@ export const cancelAddingNewBook = id => {
         payload: id
     }
 }
-export const confirmAddingNewBook = id => {
+
+export const updateBook = book => {
     return {
-        type: C.CONFIRM_ADDING_NEW_BOOK,
+        type: C.UPDATE_BOOK,
+        payload: book
+    }
+}
+export const cancelUpdatingBook = id => {
+    return {
+        type: C.CANCEL_UPDATING_BOOK,
         payload: id
+    }
+}
+export const confirmUpdatingBook = _ => {
+    return {
+        type: C.CONFIRM_UPDATING_BOOK,
     }
 }

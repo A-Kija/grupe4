@@ -9,3 +9,7 @@ export const RESTORE_MARKED_BOOK = 'RESTORE_MARKED_BOOK'; // Graziname knyga, ku
 export const ADD_NEW_BOOK = 'ADD_NEW_BOOK'; // I sarasa idedame nauja knyga
 export const CANCEL_ADDING_NEW_BOOK = 'CANCEL_ADDING_NEW_BOOK'; // Atsaukiame naujos knygos pridejima
 export const CONFIRM_ADDING_NEW_BOOK = 'CONFIRM_ADDING_NEW_BOOK'; // Patvirtiname naujos knygos pridejima
+
+export const UPDATE_BOOK = 'UPDATE_BOOK'; // Atnaujina knygos duomenis
+export const CANCEL_UPDATING_BOOK = 'CANCEL_UPDATING_BOOK'; // Atsaukiame knygos atnaujinima
+export const CONFIRM_UPDATING_BOOK = 'CONFIRM_UPDATING_BOOK'; // Patvirtiname knygos atnaujinima
