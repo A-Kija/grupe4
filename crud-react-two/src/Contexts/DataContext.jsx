@@ -1,14 +1,19 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 import useBooks from '../Hooks/useBooks';
 import useDeleteBook from '../Hooks/useDeleteBook';
+import useCreateBook from '../Hooks/useCreateBook';
+import MsgContext from './MsgContext';
 
 const DataContext = createContext();
 
 
-export const DataProvider = ({children}) => {
+export const DataProvider = ({ children }) => {
 
-   const [books, dispatchBooks] = useBooks();
-   const { deleteBook, setDeleteBook, destroyBook, setDestroyBook } = useDeleteBook(dispatchBooks);
+    const { msg } = useContext(MsgContext);
+
+    const [books, dispatchBooks] = useBooks();
+    const { deleteBook, setDeleteBook, destroyBook, setDestroyBook } = useDeleteBook(dispatchBooks, msg);
+    const { setStoreBook } = useCreateBook(msg);
 
 
 
@@ -16,12 +21,13 @@ export const DataProvider = ({children}) => {
     return (
         <DataContext.Provider value={{
             books, dispatchBooks,
-            deleteBook, setDeleteBook, destroyBook, setDestroyBook
+            deleteBook, setDeleteBook, destroyBook, setDestroyBook,
+            setStoreBook
         }}>
             {children}
         </DataContext.Provider>
     );
 
-} 
+}
 
 export default DataContext;

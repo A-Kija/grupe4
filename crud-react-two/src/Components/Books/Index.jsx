@@ -1,9 +1,11 @@
+import Delete from './Delete';
 import List from './List';
 
 export default function Index() {
 
 
     return (
+        <>
         <div className="container">
             <div className="row">
                 <div className="col-4">
@@ -14,5 +16,7 @@ export default function Index() {
                 </div>
             </div>
         </div>
+        <Delete />
+        </>
     );
 }

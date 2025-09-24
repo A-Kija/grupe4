@@ -14,17 +14,34 @@ export const markToDelete = id => {
         payload: id
     }
 }
-
 export const Delete = id => {
     return {
         type: C.REMOVE_DELETED_BOOK,
         payload: id
     }
 }
-
 export const restoreDeleted = id => {
     return {
         type: C.RESTORE_MARKED_BOOK,
+        payload: id
+    }
+}
+
+export const addNewBook = id => {
+    return {
+        type: C.ADD_NEW_BOOK,
+        payload: id
+    }
+}
+export const cancelAddingNewBook = id => {
+    return {
+        type: C.CANCEL_ADDING_NEW_BOOK,
+        payload: id
+    }
+}
+export const confirmAddingNewBook = id => {
+    return {
+        type: C.CONFIRM_ADDING_NEW_BOOK,
         payload: id
     }
 }
