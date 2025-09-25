@@ -12,18 +12,16 @@ export default function useEditBook(dispatchBooks, msg) {
         if (null === updateBook) {
             return;
         }
-
-        setBooks(bs => bs.map(b => b.id === updateBook.id ? { ...b, ...updateBook, copy: { ...b } } : b));
+        dispatchBooks(A.updateBook(updateBook));
         const msgId = msg({
             title: 'Updating...',
             text: 'Your book are updating...',
             type: 'info'
         });
-
-        axios.put(URL + 'book/' + updateBook.id, updateBook)
+        axios.put(SETTINGS.URL + 'book/' + updateBook.id, updateBook)
             .then(res => {
                 console.log(res.data);
-
+                dispatchBooks(A.confirmUpdatingBook());
                 msg({
                     title: 'Updated',
                     text: 'Your book was updated',
@@ -32,11 +30,11 @@ export default function useEditBook(dispatchBooks, msg) {
             })
             .catch(error => {
                 console.log(error);
-                setBooks(bs => bs.map(b => b.id === updateBook.id ? b.copy : b));
+                dispatchBooks(A.cancelUpdatingBook(updateBook.id));
                 msg({
                     title: 'Updating error',
                     text: 'Your book was not updated',
-                    type: 'alert'
+                    type: 'warning'
                 }, msgId);
             });
     }, [updateBook, msg]);

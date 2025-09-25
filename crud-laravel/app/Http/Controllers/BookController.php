@@ -39,7 +39,7 @@ class BookController extends Controller
 
         sleep(3); // Simulate delay
 
-        abort(422, 'Simulated error');
+        // abort(422, 'Simulated error');
 
         $book = Book::findOrFail($id);
         $book->update($request->all());
