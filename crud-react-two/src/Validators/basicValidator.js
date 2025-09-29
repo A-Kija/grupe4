@@ -4,7 +4,7 @@ export function basicValidator(name, target, type, typeParam = null) {
         case 'max':
             if (target.value.length > typeParam) {
                 target.classList.add('is-invalid');
-                return `${name} must be at least ${typeParam} characters long.}`
+                return `${name} must be at least ${typeParam} characters long.`
             }
             return null;
 
@@ -18,7 +18,7 @@ export function basicValidator(name, target, type, typeParam = null) {
         case 'min':
             if (target.value.length < typeParam) {
                 target.classList.add('is-invalid');
-                return `${name} must be at least ${typeParam} characters long.}`;
+                return `${name} must be at least ${typeParam} characters long.`;
             }
             return null;
 
@@ -29,8 +29,26 @@ export function basicValidator(name, target, type, typeParam = null) {
             }
             return null;
 
+        case 'required':
+            if (!target.value.trim()) {
+                target.classList.add('is-invalid');
+                return `${name} is required.`;
+            }
+            return null;
+
+        case 'onlyDigits':
+            if (!/^\d+$/.test(target.value)) {
+                target.classList.add('is-invalid');
+                return `${name} must contain only numbers.`;
+            }
+            return null;
+
         default:
             return null;
     }
 
+}
+
+export function hasErrors(errors) {
+    return Object.values(errors).some(error => error);
 }
