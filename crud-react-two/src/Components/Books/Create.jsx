@@ -1,11 +1,11 @@
-import { useContext, useState, useRef } from 'react';
+import { useContext, useState, useRef, useEffect } from 'react';
 import DataContext from '../../Contexts/DataContext';
 import InputError from '../InputError';
 import { basicValidator, hasErrors } from '../../Validators/basicValidator';
 
 export default function Create() {
 
-    const { setStoreBook } = useContext(DataContext);
+    const { setStoreBook, serverErrors, serverSuccess } = useContext(DataContext);
 
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -15,7 +15,35 @@ export default function Create() {
     const authorInputRef = useRef(null);
     const yearInputRef = useRef(null);
 
+    const inputsMap = new Map([
+        ['title', { ref: titleInputRef, prop: 'title' }],
+        ['author', { ref: authorInputRef, prop: 'author' }],
+        ['published_year', { ref: yearInputRef, prop: 'published_year' }]
+    ]);
+
     const [errors, setErrors] = useState({});
+
+    useEffect(_ => {
+        if (serverSuccess) {
+            setTitle('');
+            setAuthor('');
+            setPublished_year('');
+        }
+    }, [serverSuccess]);
+
+    useEffect(_ => {
+        if (serverErrors) {
+            Object.entries(serverErrors).forEach(([field, messages]) => {
+                if (inputsMap.has(field)) {
+                    const { ref, prop } = inputsMap.get(field);
+                    ref.current.classList.add('is-invalid');
+                    setErrors(prev => ({ ...prev, [prop]: messages }));
+                }
+            });
+        }
+    }, [serverErrors]);
+
+
 
     const handleTitle = e => {
         let error;
@@ -64,7 +92,7 @@ export default function Create() {
         ];
         for (const rule of rules) {
             const error = basicValidator(rule.name, rule.el, rule.type, rule.param);
-            
+
             if (error && isError === rule.prop) {
                 continue;
             }
@@ -87,10 +115,7 @@ export default function Create() {
             author,
             published_year
         });
-        // reiktu perkelt kitur
-        setTitle('');
-        setAuthor('');
-        setPublished_year('');
+
     }
 
     return (
