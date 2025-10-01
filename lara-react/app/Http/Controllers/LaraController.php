@@ -10,6 +10,13 @@ class LaraController extends Controller
 
     public function hello()
     {
-        return 'Hello Lara';
+        $laraIs = 'Lara is awesome';
+
+        $laraColors = ['red', 'green', 'blue', 'yellow'];
+
+        return inertia('HelloLara', [
+            'laraIs' => $laraIs,
+            'laraColors' => $laraColors
+        ]);
     }
 }
