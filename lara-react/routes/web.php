@@ -12,7 +12,8 @@ use App\Http\Controllers\LaraController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/lara', [LaraController::class, 'hello']);
+Route::get('/lara', [LaraController::class, 'hello'])->name('lara');
+Route::get('/briedis', [LaraController::class, 'draugas'])->name('briedis');
 
 
 
