@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\LaraController;
+use App\Http\Controllers\ShopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,8 @@ use App\Http\Controllers\LaraController;
 
 Route::get('/lara', [LaraController::class, 'hello'])->name('lara');
 Route::get('/briedis', [LaraController::class, 'draugas'])->name('briedis');
+
+Route::get('/shop', [ShopController::class, 'create'])->name('shop.create');
 
 
 
