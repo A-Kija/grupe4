@@ -1,15 +1,18 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useState } from 'react';
+import useImage from '@/Hooks/useImage';
 
 export default function Create() {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
+    const { image, handleImageChange } = useImage();
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // Submit logic here (e.g., API call)
-        alert(`Product: ${name}, Price: ${price}, Description: ${description}`);
+        alert(`Product: ${name}, Price: ${price}, Description: ${description}, Image: ${image}`);
     };
 
     return (
@@ -38,12 +41,25 @@ export default function Create() {
                         />
                     </div>
                     <div className="mb-4">
+                        <label className="block mb-1 font-semibold">Description</label>
+                        <textarea
+                            className="w-full border px-3 py-2 rounded"
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                            required
+                        ></textarea>
+                    </div>
+                    <div className="mb-4">
                         <label className="block mb-1 font-semibold">Product Image</label>
                         <input
                             type="file"
                             className="w-full border px-3 py-2 rounded"
                             accept="image/*"
+                            onChange={handleImageChange}
                         />
+                    </div>
+                    <div className="mb-4">
+                        {image && <img src={image} alt="Product Preview" className="mt-2" />}
                     </div>
                     <button
                         type="submit"
