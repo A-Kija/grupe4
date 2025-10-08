@@ -8,7 +8,7 @@ export default function Create({ auth, siteUrl }) {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
-    const { image, handleImageChange } = useImage();
+    const { image, handleImageChange, clearImage } = useImage();
     const imageInputRef = useRef(null);
 
     const { createProduct, loading, error } = useCreateProduct(siteUrl);
@@ -25,16 +25,15 @@ export default function Create({ auth, siteUrl }) {
         if (image) {
             dataForm.append('image', imageInputRef.current.files[0]);
         }
-        // siųsti dataForm į serverį naudojant fetch arba axios
         const response = createProduct(dataForm);
         response.then(response => {
             if (response && response.success && response.id) {
-                addMessage('Product created successfully!', 'success');
-                console.log(response);
+                addMessage(response.message, 'success');
                 setName('');
                 setPrice('');
                 setDescription('');
                 imageInputRef.current.value = null;
+                clearImage();
             }
         });
     };
@@ -93,9 +92,16 @@ export default function Create({ auth, siteUrl }) {
                     </div>
                     <button
                         type="submit"
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center justify-center"
+                        disabled={loading}
                     >
-                        Create Product
+                        {loading ? (
+                            <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                            </svg>
+                        ) : null}
+                        {loading ? 'Creating...' : 'Create Product'}
                     </button>
                 </form>
             </div>

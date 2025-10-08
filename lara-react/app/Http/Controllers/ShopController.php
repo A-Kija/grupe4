@@ -16,7 +16,11 @@ class ShopController extends Controller
      */
     public function index()
     {
-        //
+        $products = Shop::all();
+
+        return Inertia::render('Shop/List', [
+            'products' => $products
+        ]);
     }
 
     /**
@@ -32,6 +36,9 @@ class ShopController extends Controller
      */
     public function store(StoreShopRequest $request)
     {
+        sleep(2); //simuliuojame vėlavimą
+        
+        
         //ar yra failas
         if ($request->hasFile('image')) {
             //gauti failą
@@ -63,7 +70,7 @@ class ShopController extends Controller
         return response()->json([
             'success' => true,
             'id' => $product->id,
-            'message' => 'Product created successfully'
+            'message' => 'Product created successfully!'
         ], 201);
     }
     

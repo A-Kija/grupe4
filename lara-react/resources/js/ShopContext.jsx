@@ -3,11 +3,10 @@ import { createContext, useState } from 'react';
 const ShopContext = createContext();
 
 
-
-
 export function ShopProvider({ children }) {
 
     const [messages, setMessages] = useState([]);
+    const [deleteProduct, setDeleteProduct] = useState(null);
 
     const addMessage = (msg, type) => {
         console.log('Validation error:', msg);
