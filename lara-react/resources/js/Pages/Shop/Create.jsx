@@ -1,7 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import useImage from '@/Hooks/useImage';
 import useCreateProduct from '@/Hooks/useCreateProduct';
+import ShopContext from '@/ShopContext';
 
 export default function Create({ auth, siteUrl }) {
     const [name, setName] = useState('');
@@ -11,6 +12,8 @@ export default function Create({ auth, siteUrl }) {
     const imageInputRef = useRef(null);
 
     const { createProduct, loading, error } = useCreateProduct(siteUrl);
+
+    const { addMessage } = useContext(ShopContext);
 
 
     const handleSubmit = e => {
@@ -24,12 +27,21 @@ export default function Create({ auth, siteUrl }) {
         }
         // siųsti dataForm į serverį naudojant fetch arba axios
         const response = createProduct(dataForm);
-        console.log(response);
+        response.then(response => {
+            if (response && response.success && response.id) {
+                addMessage('Product created successfully!', 'success');
+                console.log(response);
+                setName('');
+                setPrice('');
+                setDescription('');
+                imageInputRef.current.value = null;
+            }
+        });
     };
 
     useEffect(_ => {
         if (error) {
-            console.log('Error creating product:', error);
+            addMessage(error, 'error');
         }
     }, [error]);
 

@@ -55,13 +55,14 @@ class ShopController extends Controller
         } else {
             $filePath = null; // jei nėra failo, nustatome kintamąjį kaip null
         }
-        Shop::create([
+        $product = Shop::create([
             ...$request->validated(),
             'image_path' => $filePath, // išsaugome failo kelią duomenų bazėje
         ]);
 
         return response()->json([
             'success' => true,
+            'id' => $product->id,
             'message' => 'Product created successfully'
         ], 201);
     }
