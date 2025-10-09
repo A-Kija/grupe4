@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Modal from '@/Components/Modal';
 import ShopContext from '@/ShopContext';
 import useDeleteProduct from '@/Hooks/useDeleteProduct';
@@ -7,9 +7,15 @@ import useDeleteProduct from '@/Hooks/useDeleteProduct';
 
 export default function Delete() {
 
-    const { deleteProduct, setDeleteProduct } = useContext(ShopContext);
+    const { deleteProduct, setDeleteProduct, addMessage, setProducts } = useContext(ShopContext);
 
     const { destroyProduct, loading, error } = useDeleteProduct();
+
+    useEffect(_ => {
+        if (error) {
+            addMessage(error, 'error');
+        }
+    }, [error]);
 
     if (!deleteProduct) {
         return null;
@@ -26,6 +32,8 @@ export default function Delete() {
                         onClick={_ => destroyProduct(deleteProduct).then(response => {
                             if (response && response.success) {
                                 setDeleteProduct(null);
+                                addMessage(response.message, 'success');
+                                setProducts(prevProducts => prevProducts.filter(p => p.id !== deleteProduct.id));
                             }
                         })}
                         disabled={loading}

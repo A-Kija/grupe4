@@ -10,8 +10,11 @@ export function ShopProvider({ children, ...props }) {
 
     // console.log('ShopContext props:', props?.initialPage?.props ?? {});
 
+    const [products, setProducts] = useState(props?.initialPage?.props?.products || []);
+    const siteUrl = props?.initialPage?.props?.siteUrl || '';
+    const auth = props?.initialPage?.props?.auth || {};
+
     const addMessage = (msg, type) => {
-        console.log('Validation error:', msg);
         const msgId = Math.random().toString(36).substring(2, 9);
         if (typeof msg === 'string') {
             setMessages(m => [...m, { id: msgId, text: msg, type: type }]);
@@ -32,7 +35,7 @@ export function ShopProvider({ children, ...props }) {
 
     return (
         <ShopContext.Provider value={{
-            ...props?.initialPage?.props ?? {},
+            auth, siteUrl, products, setProducts,
             messages, addMessage,
             deleteProduct, setDeleteProduct
         }}>

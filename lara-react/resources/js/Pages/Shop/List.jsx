@@ -2,10 +2,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useContext } from 'react';
 import ShopContext from '@/ShopContext';
 
-export default function List({ auth, siteUrl, products }) {
+export default function List() {
 
 
-    const { setDeleteProduct } = useContext(ShopContext);
+    const { setDeleteProduct, auth, siteUrl, products } = useContext(ShopContext);
 
 
 
