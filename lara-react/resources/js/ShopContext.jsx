@@ -3,10 +3,12 @@ import { createContext, useState } from 'react';
 const ShopContext = createContext();
 
 
-export function ShopProvider({ children }) {
+export function ShopProvider({ children, ...props }) {
 
     const [messages, setMessages] = useState([]);
     const [deleteProduct, setDeleteProduct] = useState(null);
+
+    // console.log('ShopContext props:', props?.initialPage?.props ?? {});
 
     const addMessage = (msg, type) => {
         console.log('Validation error:', msg);
@@ -29,7 +31,11 @@ export function ShopProvider({ children }) {
     };
 
     return (
-        <ShopContext.Provider value={{ messages, addMessage }}>
+        <ShopContext.Provider value={{
+            ...props?.initialPage?.props ?? {},
+            messages, addMessage,
+            deleteProduct, setDeleteProduct
+        }}>
             {children}
         </ShopContext.Provider>
     );
